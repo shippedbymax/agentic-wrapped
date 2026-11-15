@@ -1,4 +1,4 @@
-import type { AgentAdapter, HostEnvironment, UsageEvent } from '../core';
+import { type AgentAdapter, type HostEnvironment, type UsageEvent, formatAgentName } from '../core';
 
 export interface CollectResult {
   events: UsageEvent[];
@@ -19,7 +19,7 @@ export async function collectEvents(
 
   for (const adapter of adapters) {
     const sources = await adapter.discover(host);
-    fileCountByAgent.set(adapter.displayName, sources.length);
+    fileCountByAgent.set(formatAgentName(adapter.id), sources.length);
     for (const source of sources) {
       try {
         for await (const event of adapter.parse(source, () => {

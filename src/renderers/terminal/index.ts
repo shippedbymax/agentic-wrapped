@@ -16,7 +16,7 @@ function renderBar(share: number): string {
   return pc.magenta('█'.repeat(filled)) + pc.dim('░'.repeat(BAR_WIDTH - filled));
 }
 
-export function renderTerminalReport(report: WrappedReport): string {
+function renderTerminalReport(report: WrappedReport): string {
   const { stats, insights } = report;
   const lines: string[] = [
     '',

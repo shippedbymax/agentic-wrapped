@@ -2,6 +2,12 @@
 export const AGENT_IDS = ['claude-code', 'codex'] as const;
 export type AgentId = (typeof AGENT_IDS)[number];
 
+/** Typed as a full record, so a new `AgentId` without a name fails to compile. */
+export const AGENT_DISPLAY_NAMES: Readonly<Record<AgentId, string>> = {
+  'claude-code': 'Claude Code',
+  codex: 'Codex',
+};
+
 /**
  * One model call, normalized. This is the only shape the core understands.
  *

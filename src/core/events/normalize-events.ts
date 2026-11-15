@@ -26,7 +26,16 @@ function isValidEvent(event: UsageEvent): boolean {
   return TOKEN_FIELDS.every((field) => Number.isFinite(event[field]) && event[field] >= 0);
 }
 
-/** Drops invalid events, duplicates and events outside the requested year. Sorts by time. */
+function sumTokens(event: UsageEvent): number {
+  return event.inputTokens + event.outputTokens + event.cacheReadTokens + event.cacheWriteTokens;
+}
+
+/**
+ * Drops invalid events, duplicates and events outside the requested year. Sorts by time.
+ *
+ * Of several copies of the same event, the one with the most tokens wins: agents that
+ * log a response while it streams write early copies with partial counts.
+ */
 export function normalizeEvents(
   rawEvents: Iterable<UsageEvent>,
   options: NormalizeOptions,
@@ -35,8 +44,7 @@ export function normalizeEvents(
     timeZone: options.timeZone,
     year: 'numeric',
   });
-  const seenEventIds = new Set<string>();
-  const events: UsageEvent[] = [];
+  const eventsByKey = new Map<string, UsageEvent>();
   let duplicateCount = 0;
   let invalidCount = 0;
   let outOfRangeCount = 0;
@@ -51,14 +59,16 @@ export function normalizeEvents(
       continue;
     }
     const dedupeKey = `${event.agentId}:${event.eventId}`;
-    if (seenEventIds.has(dedupeKey)) {
+    const existing = eventsByKey.get(dedupeKey);
+    if (existing) {
       duplicateCount += 1;
-      continue;
+      if (sumTokens(event) <= sumTokens(existing)) continue;
     }
-    seenEventIds.add(dedupeKey);
-    events.push(event);
+    eventsByKey.set(dedupeKey, event);
   }
 
-  events.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime());
+  const events = [...eventsByKey.values()].sort(
+    (a, b) => a.timestamp.getTime() - b.timestamp.getTime(),
+  );
   return { events, duplicateCount, invalidCount, outOfRangeCount };
 }

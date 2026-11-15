@@ -20,7 +20,6 @@ export type SkippedLineReporter = (reason: string) => void;
 /** Port: turns one agent's local logs into normalized usage events. */
 export interface AgentAdapter {
   id: AgentId;
-  displayName: string;
   discover(host: HostEnvironment): Promise<LogSource[]>;
   parse(source: LogSource, onSkippedLine?: SkippedLineReporter): AsyncIterable<UsageEvent>;
 }

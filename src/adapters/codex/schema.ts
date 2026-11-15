@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 const tokenCount = z.number().int().nonnegative();
 
-export const codexTokenUsageSchema = z.object({
+const codexTokenUsageSchema = z.object({
   input_tokens: tokenCount,
   cached_input_tokens: tokenCount.optional(),
   output_tokens: tokenCount,

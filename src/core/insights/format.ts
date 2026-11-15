@@ -1,3 +1,5 @@
+import { AGENT_DISPLAY_NAMES, type AgentId } from '../events/usage-event';
+
 const COMPACT_UNITS: ReadonlyArray<readonly [number, string]> = [
   [1e12, 'T'],
   [1e9, 'B'],
@@ -59,13 +61,8 @@ export function formatDay(date: string): string {
   return `${MONTH_NAMES[Number(month) - 1] ?? '?'} ${Number(day)}`;
 }
 
-const AGENT_DISPLAY_NAMES: Readonly<Record<string, string>> = {
-  'claude-code': 'Claude Code',
-  codex: 'Codex',
-};
-
-export function formatAgentName(agentId: string): string {
-  return AGENT_DISPLAY_NAMES[agentId] ?? agentId;
+export function formatAgentName(agentId: AgentId): string {
+  return AGENT_DISPLAY_NAMES[agentId];
 }
 
 /** `claude-sonnet-4-5-20250929` -> `claude-sonnet-4-5`. Drops the release date for display. */

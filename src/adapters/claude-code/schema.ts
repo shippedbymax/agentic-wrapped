@@ -20,5 +20,3 @@ export const claudeCodeAssistantLineSchema = z.object({
     }),
   }),
 });
-
-export type ClaudeCodeAssistantLine = z.infer<typeof claudeCodeAssistantLineSchema>;

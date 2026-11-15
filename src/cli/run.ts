@@ -1,5 +1,5 @@
-import { writeFile } from 'node:fs/promises';
-import { extname, resolve } from 'node:path';
+import { mkdir, writeFile } from 'node:fs/promises';
+import { dirname, extname, resolve } from 'node:path';
 import { Command, InvalidArgumentError, Option } from 'commander';
 import { ALL_ADAPTERS, getAdapter } from '../adapters/registry';
 import {
@@ -7,6 +7,7 @@ import {
   type AgentId,
   DEFAULT_PRICE_TABLE,
   type HostEnvironment,
+  PRICE_TABLE_UPDATED_AT,
   buildReport,
 } from '../core';
 import { imageRenderer } from '../renderers/image';
@@ -43,6 +44,15 @@ function parseYear(value: string): number {
   return year;
 }
 
+function parseTimeZone(value: string): string {
+  try {
+    new Intl.DateTimeFormat('en-US', { timeZone: value });
+  } catch {
+    throw new InvalidArgumentError('Expected an IANA time zone like Europe/Berlin.');
+  }
+  return value;
+}
+
 /** Runs the CLI. Returns the process exit code. */
 export async function runCli(argv: readonly string[], deps: CliDependencies): Promise<number> {
   const program = new Command()
@@ -55,7 +65,7 @@ export async function runCli(argv: readonly string[], deps: CliDependencies): Pr
     .option('--json', 'print the raw report as JSON instead', false)
     .option('--no-image', 'do not write an image')
     .option('--no-video', 'do not write the video player')
-    .option('--time-zone <iana>', 'time zone for days and hours', deps.timeZone)
+    .option('--time-zone <iana>', 'time zone for days and hours', parseTimeZone, deps.timeZone)
     .exitOverride()
     .configureOutput({ writeOut: deps.writeStdout, writeErr: deps.writeStderr });
 
@@ -89,6 +99,7 @@ export async function runCli(argv: readonly string[], deps: CliDependencies): Pr
   }
 
   deps.writeStdout(await terminalRenderer.render(report));
+  deps.writeStdout(`  API value uses list prices as of ${PRICE_TABLE_UPDATED_AT}.\n\n`);
 
   const ignoredCount = collected.skippedLineCount + dropped.invalidCount;
   if (ignoredCount > 0 || collected.unreadableFileCount > 0) {
@@ -99,6 +110,7 @@ export async function runCli(argv: readonly string[], deps: CliDependencies): Pr
 
   const imagePath = resolve(options.output ?? `agent-wrapped-${options.year}.png`);
   const videoPath = `${imagePath.slice(0, imagePath.length - extname(imagePath).length)}.html`;
+  if (options.image || options.video) await mkdir(dirname(imagePath), { recursive: true });
   if (options.image) {
     await writeFile(imagePath, await imageRenderer.render(report));
     deps.writeStdout(`  Card:  ${imagePath}\n`);

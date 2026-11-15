@@ -4,7 +4,6 @@ import { parseClaudeCodeLog } from './parse';
 
 export const claudeCodeAdapter: AgentAdapter = {
   id: 'claude-code',
-  displayName: 'Claude Code',
   discover: discoverClaudeCodeLogs,
   parse: parseClaudeCodeLog,
 };

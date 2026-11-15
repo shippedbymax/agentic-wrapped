@@ -9,11 +9,11 @@
  */
 import { spawn } from 'node:child_process';
 import { mkdir, rm, writeFile } from 'node:fs/promises';
-import { createRequire } from 'node:module';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { GlobalFonts, createCanvas } from '@napi-rs/canvas';
 import type { WrappedReport } from '../src/core';
+import { INTER_FONT_WEIGHTS, readInterFont } from '../src/renderers/shared/inter-font';
 import { renderBeat } from '../src/renderers/video/player/beat';
 import { type SceneContext, drawFrame } from '../src/renderers/video/player/scene';
 import {
@@ -26,12 +26,8 @@ import {
 import { buildVideoData } from '../src/renderers/video/video-data';
 
 const SAMPLE_RATE = 44_100;
-const require = createRequire(import.meta.url);
-for (const weight of [400, 700, 800]) {
-  GlobalFonts.registerFromPath(
-    require.resolve(`@fontsource/inter/files/inter-latin-${weight}-normal.woff`),
-    'Inter',
-  );
+for (const weight of INTER_FONT_WEIGHTS) {
+  GlobalFonts.register(await readInterFont(weight), 'Inter');
 }
 
 async function readStdin(): Promise<string> {

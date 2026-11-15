@@ -72,7 +72,14 @@ describe('agent-wrapped CLI', () => {
     expect(stderr).toContain('No agent activity found for 2024');
   });
 
-  it('rejects a bad year', async () => {
+  it('rejects a bad year and a bad time zone', async () => {
     expect((await run(['--year', 'soon'])).exitCode).toBe(1);
+    expect((await run(['--time-zone', 'Mars/Olympus'])).exitCode).toBe(1);
+  });
+
+  it('creates the output folder when it does not exist', async () => {
+    const outputPath = join(homeDir, 'new', 'folder', 'card.png');
+    expect((await run(['--output', outputPath, '--no-video'])).exitCode).toBe(0);
+    expect((await readFile(outputPath)).length).toBeGreaterThan(0);
   });
 });

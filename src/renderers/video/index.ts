@@ -1,18 +1,12 @@
-import { readFile } from 'node:fs/promises';
-import { createRequire } from 'node:module';
 import type { Renderer, WrappedReport } from '../../core';
+import { INTER_FONT_WEIGHTS, readInterFont } from '../shared/inter-font';
 import { PLAYER_SCRIPT } from './player-bundle.generated';
 import { type VideoData, buildVideoData } from './video-data';
 
-const FONT_WEIGHTS = [400, 700, 800] as const;
-const require = createRequire(import.meta.url);
-
 async function buildFontFaces(): Promise<string> {
   const faces = await Promise.all(
-    FONT_WEIGHTS.map(async (weight) => {
-      const font = await readFile(
-        require.resolve(`@fontsource/inter/files/inter-latin-${weight}-normal.woff`),
-      );
+    INTER_FONT_WEIGHTS.map(async (weight) => {
+      const font = await readInterFont(weight);
       return `@font-face{font-family:Inter;font-weight:${weight};src:url(data:font/woff;base64,${font.toString('base64')}) format("woff")}`;
     }),
   );
@@ -24,7 +18,7 @@ function toInlineJson(data: VideoData): string {
   return JSON.stringify(data).replace(/</g, '\\u003c');
 }
 
-export function buildVideoPage(data: VideoData, fontFaces: string): string {
+function buildVideoPage(data: VideoData, fontFaces: string): string {
   return `<!doctype html>
 <html lang="en">
 <head>

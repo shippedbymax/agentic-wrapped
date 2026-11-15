@@ -5,10 +5,7 @@ export type { AgentId, UsageEvent } from './events/usage-event';
 export {
   formatAgentName,
   formatCompactNumber,
-  formatDay,
-  formatDuration,
   formatModelName,
-  formatPercent,
   formatUsd,
 } from './insights/format';
 export type { Insight } from './insights/insight';

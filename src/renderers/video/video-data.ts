@@ -1,6 +1,6 @@
 import { type Insight, type WrappedReport, formatAgentName } from '../../core';
 
-export type CountKind = 'compact' | 'usd' | 'days';
+type CountKind = 'compact' | 'usd' | 'days';
 
 /** One full-screen stat. `count` makes the number count up to its value. */
 export interface VideoSlide {

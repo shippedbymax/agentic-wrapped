@@ -1,204 +1,30 @@
 import { formatCompactNumber, formatUsd } from '../../../core/insights/format';
 import type { VideoData, VideoSlide } from '../video-data';
-import { BEAT_SEC, SCENE_SEC, VIDEO_HEIGHT, VIDEO_WIDTH, countScenes } from './timing';
+import {
+  CENTER_X,
+  CENTER_Y,
+  type SceneContext,
+  TWO_PI,
+  beatPulse,
+  clamp01,
+  drawRisingText,
+  drawText,
+  easeOutBack,
+  easeOutCubic,
+  progress,
+  setFont,
+} from './canvas-kit';
+import { INTRO_LOOK, type Look, MONTHS_LOOK, PERSONA_LOOK, drawBackground, getLook } from './looks';
+import { SCENE_SEC, VIDEO_HEIGHT, VIDEO_WIDTH, countScenes } from './timing';
 
 /**
  * Draws one frame of the video. Pure: the picture depends only on `timeSec` and `data`.
- * It runs in the browser (the player) and in Node (tests, preview render), so it only
- * uses the small part of the Canvas 2D API listed in `SceneContext`.
+ * It runs in the browser (the player) and in Node (tests, preview render).
  */
-export interface SceneContext {
-  fillStyle: unknown;
-  strokeStyle: unknown;
-  lineWidth: number;
-  globalAlpha: number;
-  font: string;
-  textAlign: string;
-  textBaseline: string;
-  save(): void;
-  restore(): void;
-  translate(x: number, y: number): void;
-  rotate(angle: number): void;
-  scale(x: number, y: number): void;
-  beginPath(): void;
-  closePath(): void;
-  moveTo(x: number, y: number): void;
-  lineTo(x: number, y: number): void;
-  arc(x: number, y: number, radius: number, startAngle: number, endAngle: number): void;
-  rect(x: number, y: number, width: number, height: number): void;
-  clip(): void;
-  fill(): void;
-  stroke(): void;
-  fillRect(x: number, y: number, width: number, height: number): void;
-  fillText(text: string, x: number, y: number): void;
-  measureText(text: string): { width: number };
-}
+export type { SceneContext } from './canvas-kit';
 
-type Motif = 'blobs' | 'rings' | 'stripes' | 'dots' | 'burst';
-
-interface Look {
-  background: string;
-  text: string;
-  accent: string;
-  motif: Motif;
-}
-
-const LOOKS: readonly Look[] = [
-  { background: '#f037a5', text: '#0b0b12', accent: '#ffffff', motif: 'rings' },
-  { background: '#cdf564', text: '#0b0b12', accent: '#4100f5', motif: 'stripes' },
-  { background: '#4100f5', text: '#ffffff', accent: '#cdf564', motif: 'dots' },
-  { background: '#ff4632', text: '#ffffff', accent: '#0b0b12', motif: 'burst' },
-  { background: '#0b0b12', text: '#cdf564', accent: '#f037a5', motif: 'rings' },
-];
-const INTRO_LOOK: Look = {
-  background: '#12061f',
-  text: '#ffffff',
-  accent: '#c084fc',
-  motif: 'blobs',
-};
-const MONTHS_LOOK: Look = {
-  background: '#1e3264',
-  text: '#ffffff',
-  accent: '#f037a5',
-  motif: 'dots',
-};
-const PERSONA_LOOK: Look = {
-  background: '#7c3aed',
-  text: '#ffffff',
-  accent: '#cdf564',
-  motif: 'burst',
-};
-
-const CENTER_X = VIDEO_WIDTH / 2;
-const CENTER_Y = VIDEO_HEIGHT / 2;
-const MAX_TEXT_WIDTH = VIDEO_WIDTH - 120;
 const TRANSITION_SEC = 0.45;
-const FONT_FAMILY = 'Inter, "Helvetica Neue", Arial, sans-serif';
 const MONTH_LETTERS = 'JFMAMJJASOND';
-const TWO_PI = Math.PI * 2;
-
-const clamp01 = (value: number) => Math.min(1, Math.max(0, value));
-/** Progress 0..1 of an animation that starts at `startSec` and takes `lengthSec`. */
-const progress = (timeSec: number, startSec: number, lengthSec: number) =>
-  clamp01((timeSec - startSec) / lengthSec);
-const easeOutCubic = (p: number) => 1 - (1 - p) ** 3;
-const easeOutBack = (p: number) => 1 + 2.7 * (p - 1) ** 3 + 1.7 * (p - 1) ** 2;
-/** 1 on every beat, then fades quickly. Makes things bounce to the music. */
-const beatPulse = (timeSec: number) => Math.exp(-7 * ((timeSec / BEAT_SEC) % 1));
-
-function setFont(ctx: SceneContext, weight: number, size: number): void {
-  ctx.font = `${weight} ${Math.round(size)}px ${FONT_FAMILY}`;
-}
-
-/** Draws centered text, shrinking the font until it fits the frame. */
-function drawText(
-  ctx: SceneContext,
-  text: string,
-  y: number,
-  options: { size: number; weight: number; color: string; alpha?: number; scale?: number },
-): void {
-  let size = options.size;
-  setFont(ctx, options.weight, size);
-  const width = ctx.measureText(text).width;
-  if (width > MAX_TEXT_WIDTH) {
-    size *= MAX_TEXT_WIDTH / width;
-    setFont(ctx, options.weight, size);
-  }
-  ctx.save();
-  ctx.globalAlpha = clamp01(options.alpha ?? 1);
-  ctx.fillStyle = options.color;
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.translate(CENTER_X, y);
-  ctx.scale(options.scale ?? 1, options.scale ?? 1);
-  ctx.fillText(text, 0, 0);
-  ctx.restore();
-}
-
-/** Text that slides up and fades in, starting at `startSec` of the scene. */
-function drawRisingText(
-  ctx: SceneContext,
-  text: string,
-  y: number,
-  sceneTimeSec: number,
-  startSec: number,
-  options: { size: number; weight: number; color: string },
-): void {
-  const p = easeOutCubic(progress(sceneTimeSec, startSec, 0.45));
-  drawText(ctx, text, y + (1 - p) * 60, { ...options, alpha: p });
-}
-
-function drawMotif(ctx: SceneContext, look: Look, timeSec: number): void {
-  const pulse = beatPulse(timeSec);
-  ctx.save();
-  ctx.fillStyle = look.accent;
-  ctx.strokeStyle = look.accent;
-
-  if (look.motif === 'rings') {
-    ctx.globalAlpha = 0.28;
-    ctx.lineWidth = 10 + pulse * 14;
-    for (let ring = 0; ring < 7; ring += 1) {
-      const radius = ((ring * 170 + timeSec * 140) % 1190) + 20;
-      ctx.beginPath();
-      ctx.arc(CENTER_X, CENTER_Y, radius, 0, TWO_PI);
-      ctx.stroke();
-    }
-  } else if (look.motif === 'stripes') {
-    ctx.globalAlpha = 0.16;
-    ctx.translate(CENTER_X, CENTER_Y);
-    ctx.rotate(-0.5);
-    const offset = (timeSec * 160) % 200;
-    for (let stripe = -8; stripe < 9; stripe += 1) {
-      ctx.fillRect(-1400, stripe * 200 + offset, 2800, 70 + pulse * 30);
-    }
-  } else if (look.motif === 'dots') {
-    ctx.globalAlpha = 0.3;
-    for (let row = 0; row < 12; row += 1) {
-      for (let column = 0; column < 10; column += 1) {
-        const wave = Math.sin(timeSec * 3 + row * 0.6 + column * 0.8);
-        ctx.beginPath();
-        ctx.arc(60 + column * 107, 70 + row * 112, 9 + wave * 6 + pulse * 6, 0, TWO_PI);
-        ctx.fill();
-      }
-    }
-  } else if (look.motif === 'burst') {
-    ctx.globalAlpha = 0.14;
-    ctx.translate(CENTER_X, CENTER_Y);
-    ctx.rotate(timeSec * 0.35);
-    for (let ray = 0; ray < 12; ray += 1) {
-      ctx.rotate(TWO_PI / 12);
-      ctx.beginPath();
-      ctx.moveTo(0, 0);
-      ctx.lineTo(1500, -150 - pulse * 60);
-      ctx.lineTo(1500, 150 + pulse * 60);
-      ctx.closePath();
-      ctx.fill();
-    }
-  } else {
-    const blobColors = [look.accent, '#f037a5', '#4100f5'];
-    for (let blob = 0; blob < 3; blob += 1) {
-      ctx.globalAlpha = 0.34;
-      ctx.fillStyle = blobColors[blob] ?? look.accent;
-      const angle = timeSec * (0.5 + blob * 0.2) + blob * 2.1;
-      ctx.beginPath();
-      ctx.arc(
-        CENTER_X + Math.cos(angle) * 330,
-        CENTER_Y + Math.sin(angle * 1.3) * 430,
-        250 + blob * 50 + pulse * 40,
-        0,
-        TWO_PI,
-      );
-      ctx.fill();
-    }
-  }
-  ctx.restore();
-}
-
-function drawBackground(ctx: SceneContext, look: Look, timeSec: number): void {
-  ctx.fillStyle = look.background;
-  ctx.fillRect(0, 0, VIDEO_WIDTH, VIDEO_HEIGHT);
-  drawMotif(ctx, look, timeSec);
-}
 
 function drawIntro(ctx: SceneContext, data: VideoData, sceneTimeSec: number): void {
   const look = INTRO_LOOK;
@@ -339,12 +165,6 @@ function drawPersona(ctx: SceneContext, data: VideoData, sceneTimeSec: number): 
     weight: 400,
     color: look.text,
   });
-}
-
-function getLook(data: VideoData, sceneIndex: number): Look {
-  if (sceneIndex === 0) return INTRO_LOOK;
-  if (sceneIndex <= data.slides.length) return LOOKS[(sceneIndex - 1) % LOOKS.length] ?? INTRO_LOOK;
-  return sceneIndex === data.slides.length + 1 ? MONTHS_LOOK : PERSONA_LOOK;
 }
 
 function drawScene(ctx: SceneContext, data: VideoData, sceneIndex: number, timeSec: number): void {

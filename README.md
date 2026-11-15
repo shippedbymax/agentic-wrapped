@@ -53,6 +53,12 @@ npx agent-wrapped
 - **Sessions** are the agents' own sessions. A session's length is the time between its first and last model call.
 - Agents delete old logs. Claude Code removes sessions after 30 days by default (`cleanupPeriodDays` in its settings), so your wrapped can only cover what is still on disk.
 
+## Known limits
+
+- **Early version.** The log readers are tested against sample logs that follow the documented formats. Real-world logs have more variety; please open an issue with the (anonymized) line that broke.
+- **Resumed or forked Codex sessions** can replay earlier usage into a new log file. Such usage may be counted twice.
+- **Memory.** Log files are read as a stream, but all usage events of the year are held in memory to remove duplicates. Very heavy users may need a few hundred MB.
+
 ## How it works
 
 ```text

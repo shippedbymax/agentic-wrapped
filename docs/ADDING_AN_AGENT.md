@@ -2,7 +2,7 @@
 
 A new agent is one folder. Use `src/adapters/codex` as a template.
 
-1. **Register the id.** Add it to `AGENT_IDS` in `src/core/events/usage-event.ts` and its display name to `AGENT_DISPLAY_NAMES` in `src/core/insights/format.ts`. TypeScript now tells you what is missing.
+1. **Register the id.** Add it to `AGENT_IDS` and `AGENT_DISPLAY_NAMES` in `src/core/events/usage-event.ts`. TypeScript now tells you what is missing.
 2. **Create the folder** `src/adapters/<agent-id>/` with:
    - `discover.ts`: find the log files. Support the agent's env var for a custom folder if it has one.
    - `schema.ts`: a zod schema for the lines you read. Only the fields you need.

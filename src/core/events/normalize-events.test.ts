@@ -12,6 +12,17 @@ describe('normalizeEvents', () => {
     expect(result.duplicateCount).toBe(1);
   });
 
+  it('keeps the most complete copy of a duplicated event', () => {
+    const partial = createEvent({ eventId: 'same', outputTokens: 10 });
+    const complete = { ...partial, outputTokens: 900 };
+    for (const order of [
+      [partial, complete],
+      [complete, partial],
+    ]) {
+      expect(normalizeEvents(order, OPTIONS).events).toEqual([complete]);
+    }
+  });
+
   it('keeps the same event id from two different agents', () => {
     const result = normalizeEvents(
       [createEvent({ eventId: 'same' }), createEvent({ eventId: 'same', agentId: 'codex' })],

@@ -4,7 +4,6 @@ import { parseCodexLog } from './parse';
 
 export const codexAdapter: AgentAdapter = {
   id: 'codex',
-  displayName: 'Codex',
   discover: discoverCodexLogs,
   parse: parseCodexLog,
 };
