@@ -1,0 +1,828 @@
+{
+  "source": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
+  "updatedAt": "2026-11-15",
+  "prices": {
+    "chat-latest": {
+      "inputUsdPerToken": 0.000005,
+      "outputUsdPerToken": 0.00003,
+      "cacheReadUsdPerToken": 5e-7,
+      "cacheWriteUsdPerToken": 0.000005
+    },
+    "claude-fable-5": {
+      "inputUsdPerToken": 0.00001,
+      "outputUsdPerToken": 0.00005,
+      "cacheReadUsdPerToken": 0.000001,
+      "cacheWriteUsdPerToken": 0.0000125
+    },
+    "claude-fable-5-1": {
+      "inputUsdPerToken": 0.00001,
+      "outputUsdPerToken": 0.00005,
+      "cacheReadUsdPerToken": 2.5e-7,
+      "cacheWriteUsdPerToken": 0.0000125
+    },
+    "claude-fable-5-2": {
+      "inputUsdPerToken": 0.000008,
+      "outputUsdPerToken": 0.00004,
+      "cacheReadUsdPerToken": 2e-7,
+      "cacheWriteUsdPerToken": 0.00001
+    },
+    "claude-haiku-4-5": {
+      "inputUsdPerToken": 0.000001,
+      "outputUsdPerToken": 0.000005,
+      "cacheReadUsdPerToken": 1e-7,
+      "cacheWriteUsdPerToken": 0.00000125
+    },
+    "claude-haiku-4-5-20251001": {
+      "inputUsdPerToken": 0.000001,
+      "outputUsdPerToken": 0.000005,
+      "cacheReadUsdPerToken": 1e-7,
+      "cacheWriteUsdPerToken": 0.00000125
+    },
+    "claude-haiku-5-5": {
+      "inputUsdPerToken": 1e-7,
+      "outputUsdPerToken": 5e-7,
+      "cacheReadUsdPerToken": 1e-8,
+      "cacheWriteUsdPerToken": 1.25e-7
+    },
+    "claude-mythos-5": {
+      "inputUsdPerToken": 0.00001,
+      "outputUsdPerToken": 0.00005,
+      "cacheReadUsdPerToken": 0.000001,
+      "cacheWriteUsdPerToken": 0.0000125
+    },
+    "claude-mythos-5-1": {
+      "inputUsdPerToken": 0.00001,
+      "outputUsdPerToken": 0.00005,
+      "cacheReadUsdPerToken": 2.5e-7,
+      "cacheWriteUsdPerToken": 0.0000125
+    },
+    "claude-mythos-5-2": {
+      "inputUsdPerToken": 0.000008,
+      "outputUsdPerToken": 0.00004,
+      "cacheReadUsdPerToken": 2e-7,
+      "cacheWriteUsdPerToken": 0.00001
+    },
+    "claude-mythos-preview": {
+      "inputUsdPerToken": 0.00001,
+      "outputUsdPerToken": 0.00005,
+      "cacheReadUsdPerToken": 0.000001,
+      "cacheWriteUsdPerToken": 0.0000125
+    },
+    "claude-opus-4-5": {
+      "inputUsdPerToken": 0.000005,
+      "outputUsdPerToken": 0.000025,
+      "cacheReadUsdPerToken": 5e-7,
+      "cacheWriteUsdPerToken": 0.00000625
+    },
+    "claude-opus-4-5-20251101": {
+      "inputUsdPerToken": 0.000005,
+      "outputUsdPerToken": 0.000025,
+      "cacheReadUsdPerToken": 5e-7,
+      "cacheWriteUsdPerToken": 0.00000625
+    },
+    "claude-opus-4-6": {
+      "inputUsdPerToken": 0.000005,
+      "outputUsdPerToken": 0.000025,
+      "cacheReadUsdPerToken": 5e-7,
+      "cacheWriteUsdPerToken": 0.00000625
+    },
+    "claude-opus-4-6-20260205": {
+      "inputUsdPerToken": 0.000005,
+      "outputUsdPerToken": 0.000025,
+      "cacheReadUsdPerToken": 5e-7,
+      "cacheWriteUsdPerToken": 0.00000625
+    },
+    "claude-opus-4-7": {
+      "inputUsdPerToken": 0.000005,
+      "outputUsdPerToken": 0.000025,
+      "cacheReadUsdPerToken": 5e-7,
+      "cacheWriteUsdPerToken": 0.00000625
+    },
+    "claude-opus-4-7-20260416": {
+      "inputUsdPerToken": 0.000005,
+      "outputUsdPerToken": 0.000025,
+      "cacheReadUsdPerToken": 5e-7,
+      "cacheWriteUsdPerToken": 0.00000625
+    },
+    "claude-opus-4-8": {
+      "inputUsdPerToken": 0.000005,
+      "outputUsdPerToken": 0.000025,
+      "cacheReadUsdPerToken": 5e-7,
+      "cacheWriteUsdPerToken": 0.00000625
+    },
+    "claude-opus-5": {
+      "inputUsdPerToken": 0.000005,
+      "outputUsdPerToken": 0.000025,
+      "cacheReadUsdPerToken": 5e-7,
+      "cacheWriteUsdPerToken": 0.00000625
+    },
+    "claude-opus-5-5": {
+      "inputUsdPerToken": 0.000004,
+      "outputUsdPerToken": 0.00002,
+      "cacheReadUsdPerToken": 2e-7,
+      "cacheWriteUsdPerToken": 0.000005
+    },
+    "claude-sonnet-4-5": {
+      "inputUsdPerToken": 0.000003,
+      "outputUsdPerToken": 0.000015,
+      "cacheReadUsdPerToken": 3e-7,
+      "cacheWriteUsdPerToken": 0.00000375
+    },
+    "claude-sonnet-4-5-20250929": {
+      "inputUsdPerToken": 0.000003,
+      "outputUsdPerToken": 0.000015,
+      "cacheReadUsdPerToken": 3e-7,
+      "cacheWriteUsdPerToken": 0.00000375
+    },
+    "claude-sonnet-4-6": {
+      "inputUsdPerToken": 0.000003,
+      "outputUsdPerToken": 0.000015,
+      "cacheReadUsdPerToken": 3e-7,
+      "cacheWriteUsdPerToken": 0.00000375
+    },
+    "claude-sonnet-5": {
+      "inputUsdPerToken": 0.000002,
+      "outputUsdPerToken": 0.00001,
+      "cacheReadUsdPerToken": 2e-7,
+      "cacheWriteUsdPerToken": 0.0000025
+    },
+    "claude-sonnet-5-5": {
+      "inputUsdPerToken": 0.000002,
+      "outputUsdPerToken": 0.00001,
+      "cacheReadUsdPerToken": 1e-7,
+      "cacheWriteUsdPerToken": 0.0000025
+    },
+    "computer-use-preview": {
+      "inputUsdPerToken": 0.000003,
+      "outputUsdPerToken": 0.000012,
+      "cacheReadUsdPerToken": 0.000003,
+      "cacheWriteUsdPerToken": 0.000003
+    },
+    "computer-use-preview-2025-03-11": {
+      "inputUsdPerToken": 0.000003,
+      "outputUsdPerToken": 0.000012,
+      "cacheReadUsdPerToken": 0.000003,
+      "cacheWriteUsdPerToken": 0.000003
+    },
+    "daybreak-blue-latest": {
+      "inputUsdPerToken": 0.000004,
+      "outputUsdPerToken": 0.00002,
+      "cacheReadUsdPerToken": 4e-7,
+      "cacheWriteUsdPerToken": 0.000005
+    },
+    "daybreak-red-latest": {
+      "inputUsdPerToken": 0.0000125,
+      "outputUsdPerToken": 0.000075,
+      "cacheReadUsdPerToken": 0.00000125,
+      "cacheWriteUsdPerToken": 0.000015625
+    },
+    "gpt-3.5-turbo": {
+      "inputUsdPerToken": 5e-7,
+      "outputUsdPerToken": 0.0000015,
+      "cacheReadUsdPerToken": 5e-7,
+      "cacheWriteUsdPerToken": 5e-7
+    },
+    "gpt-3.5-turbo-0125": {
+      "inputUsdPerToken": 5e-7,
+      "outputUsdPerToken": 0.0000015,
+      "cacheReadUsdPerToken": 5e-7,
+      "cacheWriteUsdPerToken": 5e-7
+    },
+    "gpt-3.5-turbo-1106": {
+      "inputUsdPerToken": 0.000001,
+      "outputUsdPerToken": 0.000002,
+      "cacheReadUsdPerToken": 0.000001,
+      "cacheWriteUsdPerToken": 0.000001
+    },
+    "gpt-3.5-turbo-16k": {
+      "inputUsdPerToken": 0.000003,
+      "outputUsdPerToken": 0.000004,
+      "cacheReadUsdPerToken": 0.000003,
+      "cacheWriteUsdPerToken": 0.000003
+    },
+    "gpt-4": {
+      "inputUsdPerToken": 0.00003,
+      "outputUsdPerToken": 0.00006,
+      "cacheReadUsdPerToken": 0.00003,
+      "cacheWriteUsdPerToken": 0.00003
+    },
+    "gpt-4-0613": {
+      "inputUsdPerToken": 0.00003,
+      "outputUsdPerToken": 0.00006,
+      "cacheReadUsdPerToken": 0.00003,
+      "cacheWriteUsdPerToken": 0.00003
+    },
+    "gpt-4-1106-preview": {
+      "inputUsdPerToken": 0.00001,
+      "outputUsdPerToken": 0.00003,
+      "cacheReadUsdPerToken": 0.00001,
+      "cacheWriteUsdPerToken": 0.00001
+    },
+    "gpt-4-turbo": {
+      "inputUsdPerToken": 0.00001,
+      "outputUsdPerToken": 0.00003,
+      "cacheReadUsdPerToken": 0.00001,
+      "cacheWriteUsdPerToken": 0.00001
+    },
+    "gpt-4-turbo-2024-04-09": {
+      "inputUsdPerToken": 0.00001,
+      "outputUsdPerToken": 0.00003,
+      "cacheReadUsdPerToken": 0.00001,
+      "cacheWriteUsdPerToken": 0.00001
+    },
+    "gpt-4.1": {
+      "inputUsdPerToken": 0.000002,
+      "outputUsdPerToken": 0.000008,
+      "cacheReadUsdPerToken": 5e-7,
+      "cacheWriteUsdPerToken": 0.000002
+    },
+    "gpt-4.1-2025-04-14": {
+      "inputUsdPerToken": 0.000002,
+      "outputUsdPerToken": 0.000008,
+      "cacheReadUsdPerToken": 5e-7,
+      "cacheWriteUsdPerToken": 0.000002
+    },
+    "gpt-4.1-mini": {
+      "inputUsdPerToken": 4e-7,
+      "outputUsdPerToken": 0.0000016,
+      "cacheReadUsdPerToken": 1e-7,
+      "cacheWriteUsdPerToken": 4e-7
+    },
+    "gpt-4.1-mini-2025-04-14": {
+      "inputUsdPerToken": 4e-7,
+      "outputUsdPerToken": 0.0000016,
+      "cacheReadUsdPerToken": 1e-7,
+      "cacheWriteUsdPerToken": 4e-7
+    },
+    "gpt-4.1-nano": {
+      "inputUsdPerToken": 1e-7,
+      "outputUsdPerToken": 4e-7,
+      "cacheReadUsdPerToken": 2.5e-8,
+      "cacheWriteUsdPerToken": 1e-7
+    },
+    "gpt-4.1-nano-2025-04-14": {
+      "inputUsdPerToken": 1e-7,
+      "outputUsdPerToken": 4e-7,
+      "cacheReadUsdPerToken": 2.5e-8,
+      "cacheWriteUsdPerToken": 1e-7
+    },
+    "gpt-4o": {
+      "inputUsdPerToken": 0.0000025,
+      "outputUsdPerToken": 0.00001,
+      "cacheReadUsdPerToken": 0.00000125,
+      "cacheWriteUsdPerToken": 0.0000025
+    },
+    "gpt-4o-2024-05-13": {
+      "inputUsdPerToken": 0.000005,
+      "outputUsdPerToken": 0.000015,
+      "cacheReadUsdPerToken": 0.000005,
+      "cacheWriteUsdPerToken": 0.000005
+    },
+    "gpt-4o-2024-08-06": {
+      "inputUsdPerToken": 0.0000025,
+      "outputUsdPerToken": 0.00001,
+      "cacheReadUsdPerToken": 0.00000125,
+      "cacheWriteUsdPerToken": 0.0000025
+    },
+    "gpt-4o-2024-11-20": {
+      "inputUsdPerToken": 0.0000025,
+      "outputUsdPerToken": 0.00001,
+      "cacheReadUsdPerToken": 0.00000125,
+      "cacheWriteUsdPerToken": 0.0000025
+    },
+    "gpt-4o-audio-preview-2024-12-17": {
+      "inputUsdPerToken": 0.0000025,
+      "outputUsdPerToken": 0.00001,
+      "cacheReadUsdPerToken": 0.0000025,
+      "cacheWriteUsdPerToken": 0.0000025
+    },
+    "gpt-4o-audio-preview-2025-06-03": {
+      "inputUsdPerToken": 0.0000025,
+      "outputUsdPerToken": 0.00001,
+      "cacheReadUsdPerToken": 0.0000025,
+      "cacheWriteUsdPerToken": 0.0000025
+    },
+    "gpt-4o-mini": {
+      "inputUsdPerToken": 1.5e-7,
+      "outputUsdPerToken": 6e-7,
+      "cacheReadUsdPerToken": 7.5e-8,
+      "cacheWriteUsdPerToken": 1.5e-7
+    },
+    "gpt-4o-mini-2024-07-18": {
+      "inputUsdPerToken": 1.5e-7,
+      "outputUsdPerToken": 6e-7,
+      "cacheReadUsdPerToken": 7.5e-8,
+      "cacheWriteUsdPerToken": 1.5e-7
+    },
+    "gpt-4o-mini-audio-preview-2024-12-17": {
+      "inputUsdPerToken": 1.5e-7,
+      "outputUsdPerToken": 6e-7,
+      "cacheReadUsdPerToken": 1.5e-7,
+      "cacheWriteUsdPerToken": 1.5e-7
+    },
+    "gpt-4o-mini-search-preview": {
+      "inputUsdPerToken": 1.5e-7,
+      "outputUsdPerToken": 6e-7,
+      "cacheReadUsdPerToken": 7.5e-8,
+      "cacheWriteUsdPerToken": 1.5e-7
+    },
+    "gpt-4o-mini-search-preview-2025-03-11": {
+      "inputUsdPerToken": 1.5e-7,
+      "outputUsdPerToken": 6e-7,
+      "cacheReadUsdPerToken": 7.5e-8,
+      "cacheWriteUsdPerToken": 1.5e-7
+    },
+    "gpt-4o-search-preview": {
+      "inputUsdPerToken": 0.0000025,
+      "outputUsdPerToken": 0.00001,
+      "cacheReadUsdPerToken": 0.00000125,
+      "cacheWriteUsdPerToken": 0.0000025
+    },
+    "gpt-4o-search-preview-2025-03-11": {
+      "inputUsdPerToken": 0.0000025,
+      "outputUsdPerToken": 0.00001,
+      "cacheReadUsdPerToken": 0.00000125,
+      "cacheWriteUsdPerToken": 0.0000025
+    },
+    "gpt-5": {
+      "inputUsdPerToken": 0.00000125,
+      "outputUsdPerToken": 0.00001,
+      "cacheReadUsdPerToken": 1.25e-7,
+      "cacheWriteUsdPerToken": 0.00000125
+    },
+    "gpt-5-2025-08-07": {
+      "inputUsdPerToken": 0.00000125,
+      "outputUsdPerToken": 0.00001,
+      "cacheReadUsdPerToken": 1.25e-7,
+      "cacheWriteUsdPerToken": 0.00000125
+    },
+    "gpt-5-chat": {
+      "inputUsdPerToken": 0.00000125,
+      "outputUsdPerToken": 0.00001,
+      "cacheReadUsdPerToken": 1.25e-7,
+      "cacheWriteUsdPerToken": 0.00000125
+    },
+    "gpt-5-chat-latest": {
+      "inputUsdPerToken": 0.00000125,
+      "outputUsdPerToken": 0.00001,
+      "cacheReadUsdPerToken": 1.25e-7,
+      "cacheWriteUsdPerToken": 0.00000125
+    },
+    "gpt-5-codex": {
+      "inputUsdPerToken": 0.00000125,
+      "outputUsdPerToken": 0.00001,
+      "cacheReadUsdPerToken": 1.25e-7,
+      "cacheWriteUsdPerToken": 0.00000125
+    },
+    "gpt-5-mini": {
+      "inputUsdPerToken": 2.5e-7,
+      "outputUsdPerToken": 0.000002,
+      "cacheReadUsdPerToken": 2.5e-8,
+      "cacheWriteUsdPerToken": 2.5e-7
+    },
+    "gpt-5-mini-2025-08-07": {
+      "inputUsdPerToken": 2.5e-7,
+      "outputUsdPerToken": 0.000002,
+      "cacheReadUsdPerToken": 2.5e-8,
+      "cacheWriteUsdPerToken": 2.5e-7
+    },
+    "gpt-5-nano": {
+      "inputUsdPerToken": 5e-8,
+      "outputUsdPerToken": 4e-7,
+      "cacheReadUsdPerToken": 5e-9,
+      "cacheWriteUsdPerToken": 5e-8
+    },
+    "gpt-5-nano-2025-08-07": {
+      "inputUsdPerToken": 5e-8,
+      "outputUsdPerToken": 4e-7,
+      "cacheReadUsdPerToken": 5e-9,
+      "cacheWriteUsdPerToken": 5e-8
+    },
+    "gpt-5-pro": {
+      "inputUsdPerToken": 0.000015,
+      "outputUsdPerToken": 0.00012,
+      "cacheReadUsdPerToken": 0.000015,
+      "cacheWriteUsdPerToken": 0.000015
+    },
+    "gpt-5-pro-2025-10-06": {
+      "inputUsdPerToken": 0.000015,
+      "outputUsdPerToken": 0.00012,
+      "cacheReadUsdPerToken": 0.000015,
+      "cacheWriteUsdPerToken": 0.000015
+    },
+    "gpt-5-search-api": {
+      "inputUsdPerToken": 0.00000125,
+      "outputUsdPerToken": 0.00001,
+      "cacheReadUsdPerToken": 1.25e-7,
+      "cacheWriteUsdPerToken": 0.00000125
+    },
+    "gpt-5-search-api-2025-10-14": {
+      "inputUsdPerToken": 0.00000125,
+      "outputUsdPerToken": 0.00001,
+      "cacheReadUsdPerToken": 1.25e-7,
+      "cacheWriteUsdPerToken": 0.00000125
+    },
+    "gpt-5.1": {
+      "inputUsdPerToken": 0.00000125,
+      "outputUsdPerToken": 0.00001,
+      "cacheReadUsdPerToken": 1.25e-7,
+      "cacheWriteUsdPerToken": 0.00000125
+    },
+    "gpt-5.1-2025-11-13": {
+      "inputUsdPerToken": 0.00000125,
+      "outputUsdPerToken": 0.00001,
+      "cacheReadUsdPerToken": 1.25e-7,
+      "cacheWriteUsdPerToken": 0.00000125
+    },
+    "gpt-5.1-chat-latest": {
+      "inputUsdPerToken": 0.00000125,
+      "outputUsdPerToken": 0.00001,
+      "cacheReadUsdPerToken": 1.25e-7,
+      "cacheWriteUsdPerToken": 0.00000125
+    },
+    "gpt-5.1-codex": {
+      "inputUsdPerToken": 0.00000125,
+      "outputUsdPerToken": 0.00001,
+      "cacheReadUsdPerToken": 1.25e-7,
+      "cacheWriteUsdPerToken": 0.00000125
+    },
+    "gpt-5.1-codex-max": {
+      "inputUsdPerToken": 0.00000125,
+      "outputUsdPerToken": 0.00001,
+      "cacheReadUsdPerToken": 1.25e-7,
+      "cacheWriteUsdPerToken": 0.00000125
+    },
+    "gpt-5.1-codex-mini": {
+      "inputUsdPerToken": 2.5e-7,
+      "outputUsdPerToken": 0.000002,
+      "cacheReadUsdPerToken": 2.5e-8,
+      "cacheWriteUsdPerToken": 2.5e-7
+    },
+    "gpt-5.2": {
+      "inputUsdPerToken": 0.00000175,
+      "outputUsdPerToken": 0.000014,
+      "cacheReadUsdPerToken": 1.75e-7,
+      "cacheWriteUsdPerToken": 0.00000175
+    },
+    "gpt-5.2-2025-12-11": {
+      "inputUsdPerToken": 0.00000175,
+      "outputUsdPerToken": 0.000014,
+      "cacheReadUsdPerToken": 1.75e-7,
+      "cacheWriteUsdPerToken": 0.00000175
+    },
+    "gpt-5.2-chat-latest": {
+      "inputUsdPerToken": 0.00000175,
+      "outputUsdPerToken": 0.000014,
+      "cacheReadUsdPerToken": 1.75e-7,
+      "cacheWriteUsdPerToken": 0.00000175
+    },
+    "gpt-5.2-codex": {
+      "inputUsdPerToken": 0.00000175,
+      "outputUsdPerToken": 0.000014,
+      "cacheReadUsdPerToken": 1.75e-7,
+      "cacheWriteUsdPerToken": 0.00000175
+    },
+    "gpt-5.2-pro": {
+      "inputUsdPerToken": 0.000021,
+      "outputUsdPerToken": 0.000168,
+      "cacheReadUsdPerToken": 0.000021,
+      "cacheWriteUsdPerToken": 0.000021
+    },
+    "gpt-5.2-pro-2025-12-11": {
+      "inputUsdPerToken": 0.000021,
+      "outputUsdPerToken": 0.000168,
+      "cacheReadUsdPerToken": 0.000021,
+      "cacheWriteUsdPerToken": 0.000021
+    },
+    "gpt-5.3-chat-latest": {
+      "inputUsdPerToken": 0.00000175,
+      "outputUsdPerToken": 0.000014,
+      "cacheReadUsdPerToken": 1.75e-7,
+      "cacheWriteUsdPerToken": 0.00000175
+    },
+    "gpt-5.3-codex": {
+      "inputUsdPerToken": 0.00000175,
+      "outputUsdPerToken": 0.000014,
+      "cacheReadUsdPerToken": 1.75e-7,
+      "cacheWriteUsdPerToken": 0.00000175
+    },
+    "gpt-5.4": {
+      "inputUsdPerToken": 0.0000025,
+      "outputUsdPerToken": 0.000015,
+      "cacheReadUsdPerToken": 2.5e-7,
+      "cacheWriteUsdPerToken": 0.0000025
+    },
+    "gpt-5.4-2026-03-05": {
+      "inputUsdPerToken": 0.0000025,
+      "outputUsdPerToken": 0.000015,
+      "cacheReadUsdPerToken": 2.5e-7,
+      "cacheWriteUsdPerToken": 0.0000025
+    },
+    "gpt-5.4-mini": {
+      "inputUsdPerToken": 7.5e-7,
+      "outputUsdPerToken": 0.0000045,
+      "cacheReadUsdPerToken": 7.5e-8,
+      "cacheWriteUsdPerToken": 7.5e-7
+    },
+    "gpt-5.4-mini-2026-03-17": {
+      "inputUsdPerToken": 7.5e-7,
+      "outputUsdPerToken": 0.0000045,
+      "cacheReadUsdPerToken": 7.5e-8,
+      "cacheWriteUsdPerToken": 7.5e-7
+    },
+    "gpt-5.4-nano": {
+      "inputUsdPerToken": 2e-7,
+      "outputUsdPerToken": 0.00000125,
+      "cacheReadUsdPerToken": 2e-8,
+      "cacheWriteUsdPerToken": 2e-7
+    },
+    "gpt-5.4-nano-2026-03-17": {
+      "inputUsdPerToken": 2e-7,
+      "outputUsdPerToken": 0.00000125,
+      "cacheReadUsdPerToken": 2e-8,
+      "cacheWriteUsdPerToken": 2e-7
+    },
+    "gpt-5.4-pro": {
+      "inputUsdPerToken": 0.00003,
+      "outputUsdPerToken": 0.00018,
+      "cacheReadUsdPerToken": 0.00003,
+      "cacheWriteUsdPerToken": 0.00003
+    },
+    "gpt-5.4-pro-2026-03-05": {
+      "inputUsdPerToken": 0.00003,
+      "outputUsdPerToken": 0.00018,
+      "cacheReadUsdPerToken": 0.00003,
+      "cacheWriteUsdPerToken": 0.00003
+    },
+    "gpt-5.5": {
+      "inputUsdPerToken": 0.000005,
+      "outputUsdPerToken": 0.00003,
+      "cacheReadUsdPerToken": 5e-7,
+      "cacheWriteUsdPerToken": 0.000005
+    },
+    "gpt-5.5-2026-04-23": {
+      "inputUsdPerToken": 0.000005,
+      "outputUsdPerToken": 0.00003,
+      "cacheReadUsdPerToken": 5e-7,
+      "cacheWriteUsdPerToken": 0.000005
+    },
+    "gpt-5.5-cyber": {
+      "inputUsdPerToken": 0.0000125,
+      "outputUsdPerToken": 0.000075,
+      "cacheReadUsdPerToken": 0.00000125,
+      "cacheWriteUsdPerToken": 0.0000125
+    },
+    "gpt-5.5-cyber-preview": {
+      "inputUsdPerToken": 0.0000125,
+      "outputUsdPerToken": 0.000075,
+      "cacheReadUsdPerToken": 0.00000125,
+      "cacheWriteUsdPerToken": 0.0000125
+    },
+    "gpt-5.5-pro": {
+      "inputUsdPerToken": 0.00003,
+      "outputUsdPerToken": 0.00018,
+      "cacheReadUsdPerToken": 0.00003,
+      "cacheWriteUsdPerToken": 0.00003
+    },
+    "gpt-5.5-pro-2026-04-23": {
+      "inputUsdPerToken": 0.00003,
+      "outputUsdPerToken": 0.00018,
+      "cacheReadUsdPerToken": 0.00003,
+      "cacheWriteUsdPerToken": 0.00003
+    },
+    "gpt-5.6": {
+      "inputUsdPerToken": 0.000004,
+      "outputUsdPerToken": 0.00002,
+      "cacheReadUsdPerToken": 4e-7,
+      "cacheWriteUsdPerToken": 0.000005
+    },
+    "gpt-5.6-cyber": {
+      "inputUsdPerToken": 0.0000125,
+      "outputUsdPerToken": 0.000075,
+      "cacheReadUsdPerToken": 0.00000125,
+      "cacheWriteUsdPerToken": 0.000015625
+    },
+    "gpt-5.6-luna": {
+      "inputUsdPerToken": 2e-7,
+      "outputUsdPerToken": 0.0000012,
+      "cacheReadUsdPerToken": 2e-8,
+      "cacheWriteUsdPerToken": 2.5e-7
+    },
+    "gpt-5.6-sol": {
+      "inputUsdPerToken": 0.000004,
+      "outputUsdPerToken": 0.00002,
+      "cacheReadUsdPerToken": 4e-7,
+      "cacheWriteUsdPerToken": 0.000005
+    },
+    "gpt-5.6-terra": {
+      "inputUsdPerToken": 0.000002,
+      "outputUsdPerToken": 0.000012,
+      "cacheReadUsdPerToken": 2e-7,
+      "cacheWriteUsdPerToken": 0.0000025
+    },
+    "gpt-6-astra": {
+      "inputUsdPerToken": 0.00001,
+      "outputUsdPerToken": 0.00005,
+      "cacheReadUsdPerToken": 0.000001,
+      "cacheWriteUsdPerToken": 0.0000125
+    },
+    "gpt-6-astra-law": {
+      "inputUsdPerToken": 0.00001,
+      "outputUsdPerToken": 0.00005,
+      "cacheReadUsdPerToken": 0.000001,
+      "cacheWriteUsdPerToken": 0.00001
+    },
+    "gpt-6-cyber": {
+      "inputUsdPerToken": 0.00002,
+      "outputUsdPerToken": 0.0001,
+      "cacheReadUsdPerToken": 0.000002,
+      "cacheWriteUsdPerToken": 0.000025
+    },
+    "gpt-6-luna": {
+      "inputUsdPerToken": 1e-7,
+      "outputUsdPerToken": 5e-7,
+      "cacheReadUsdPerToken": 1e-8,
+      "cacheWriteUsdPerToken": 1.25e-7
+    },
+    "gpt-6-rosalind": {
+      "inputUsdPerToken": 0.000015,
+      "outputUsdPerToken": 0.000075,
+      "cacheReadUsdPerToken": 0.0000015,
+      "cacheWriteUsdPerToken": 0.00001875
+    },
+    "gpt-6-sol": {
+      "inputUsdPerToken": 0.000002,
+      "outputUsdPerToken": 0.00001,
+      "cacheReadUsdPerToken": 2e-7,
+      "cacheWriteUsdPerToken": 0.0000025
+    },
+    "gpt-6.1-sol": {
+      "inputUsdPerToken": 0.000002,
+      "outputUsdPerToken": 0.00001,
+      "cacheReadUsdPerToken": 1e-7,
+      "cacheWriteUsdPerToken": 0.0000025
+    },
+    "gpt-6.1-terra": {
+      "inputUsdPerToken": 0.000001,
+      "outputUsdPerToken": 0.000005,
+      "cacheReadUsdPerToken": 5e-8,
+      "cacheWriteUsdPerToken": 0.00000125
+    },
+    "gpt-audio": {
+      "inputUsdPerToken": 0.0000025,
+      "outputUsdPerToken": 0.00001,
+      "cacheReadUsdPerToken": 0.0000025,
+      "cacheWriteUsdPerToken": 0.0000025
+    },
+    "gpt-audio-1.5": {
+      "inputUsdPerToken": 0.0000025,
+      "outputUsdPerToken": 0.00001,
+      "cacheReadUsdPerToken": 0.0000025,
+      "cacheWriteUsdPerToken": 0.0000025
+    },
+    "gpt-audio-2025-08-28": {
+      "inputUsdPerToken": 0.0000025,
+      "outputUsdPerToken": 0.00001,
+      "cacheReadUsdPerToken": 0.0000025,
+      "cacheWriteUsdPerToken": 0.0000025
+    },
+    "gpt-audio-mini": {
+      "inputUsdPerToken": 6e-7,
+      "outputUsdPerToken": 0.0000024,
+      "cacheReadUsdPerToken": 6e-7,
+      "cacheWriteUsdPerToken": 6e-7
+    },
+    "gpt-audio-mini-2025-10-06": {
+      "inputUsdPerToken": 6e-7,
+      "outputUsdPerToken": 0.0000024,
+      "cacheReadUsdPerToken": 6e-7,
+      "cacheWriteUsdPerToken": 6e-7
+    },
+    "gpt-audio-mini-2025-12-15": {
+      "inputUsdPerToken": 6e-7,
+      "outputUsdPerToken": 0.0000024,
+      "cacheReadUsdPerToken": 6e-7,
+      "cacheWriteUsdPerToken": 6e-7
+    },
+    "gpt-daybreak-blue-latest": {
+      "inputUsdPerToken": 0.000004,
+      "outputUsdPerToken": 0.00002,
+      "cacheReadUsdPerToken": 4e-7,
+      "cacheWriteUsdPerToken": 0.000005
+    },
+    "gpt-daybreak-red-latest": {
+      "inputUsdPerToken": 0.0000125,
+      "outputUsdPerToken": 0.000075,
+      "cacheReadUsdPerToken": 0.00000125,
+      "cacheWriteUsdPerToken": 0.000015625
+    },
+    "gpt-rosalind-discovery": {
+      "inputUsdPerToken": 0.000005,
+      "outputUsdPerToken": 0.000025,
+      "cacheReadUsdPerToken": 5e-7,
+      "cacheWriteUsdPerToken": 0.000005
+    },
+    "gpt-rosalind-research": {
+      "inputUsdPerToken": 0.000005,
+      "outputUsdPerToken": 0.000025,
+      "cacheReadUsdPerToken": 5e-7,
+      "cacheWriteUsdPerToken": 0.000005
+    },
+    "o1": {
+      "inputUsdPerToken": 0.000015,
+      "outputUsdPerToken": 0.00006,
+      "cacheReadUsdPerToken": 0.0000075,
+      "cacheWriteUsdPerToken": 0.000015
+    },
+    "o1-2024-12-17": {
+      "inputUsdPerToken": 0.000015,
+      "outputUsdPerToken": 0.00006,
+      "cacheReadUsdPerToken": 0.0000075,
+      "cacheWriteUsdPerToken": 0.000015
+    },
+    "o1-pro": {
+      "inputUsdPerToken": 0.00015,
+      "outputUsdPerToken": 0.0006,
+      "cacheReadUsdPerToken": 0.00015,
+      "cacheWriteUsdPerToken": 0.00015
+    },
+    "o1-pro-2025-03-19": {
+      "inputUsdPerToken": 0.00015,
+      "outputUsdPerToken": 0.0006,
+      "cacheReadUsdPerToken": 0.00015,
+      "cacheWriteUsdPerToken": 0.00015
+    },
+    "o3": {
+      "inputUsdPerToken": 0.000002,
+      "outputUsdPerToken": 0.000008,
+      "cacheReadUsdPerToken": 5e-7,
+      "cacheWriteUsdPerToken": 0.000002
+    },
+    "o3-2025-04-16": {
+      "inputUsdPerToken": 0.000002,
+      "outputUsdPerToken": 0.000008,
+      "cacheReadUsdPerToken": 5e-7,
+      "cacheWriteUsdPerToken": 0.000002
+    },
+    "o3-deep-research": {
+      "inputUsdPerToken": 0.00001,
+      "outputUsdPerToken": 0.00004,
+      "cacheReadUsdPerToken": 0.0000025,
+      "cacheWriteUsdPerToken": 0.00001
+    },
+    "o3-deep-research-2025-06-26": {
+      "inputUsdPerToken": 0.00001,
+      "outputUsdPerToken": 0.00004,
+      "cacheReadUsdPerToken": 0.0000025,
+      "cacheWriteUsdPerToken": 0.00001
+    },
+    "o3-mini": {
+      "inputUsdPerToken": 0.0000011,
+      "outputUsdPerToken": 0.0000044,
+      "cacheReadUsdPerToken": 5.5e-7,
+      "cacheWriteUsdPerToken": 0.0000011
+    },
+    "o3-mini-2025-01-31": {
+      "inputUsdPerToken": 0.0000011,
+      "outputUsdPerToken": 0.0000044,
+      "cacheReadUsdPerToken": 5.5e-7,
+      "cacheWriteUsdPerToken": 0.0000011
+    },
+    "o3-pro": {
+      "inputUsdPerToken": 0.00002,
+      "outputUsdPerToken": 0.00008,
+      "cacheReadUsdPerToken": 0.00002,
+      "cacheWriteUsdPerToken": 0.00002
+    },
+    "o3-pro-2025-06-10": {
+      "inputUsdPerToken": 0.00002,
+      "outputUsdPerToken": 0.00008,
+      "cacheReadUsdPerToken": 0.00002,
+      "cacheWriteUsdPerToken": 0.00002
+    },
+    "o4-mini": {
+      "inputUsdPerToken": 0.0000011,
+      "outputUsdPerToken": 0.0000044,
+      "cacheReadUsdPerToken": 2.75e-7,
+      "cacheWriteUsdPerToken": 0.0000011
+    },
+    "o4-mini-2025-04-16": {
+      "inputUsdPerToken": 0.0000011,
+      "outputUsdPerToken": 0.0000044,
+      "cacheReadUsdPerToken": 2.75e-7,
+      "cacheWriteUsdPerToken": 0.0000011
+    },
+    "o4-mini-deep-research": {
+      "inputUsdPerToken": 0.000002,
+      "outputUsdPerToken": 0.000008,
+      "cacheReadUsdPerToken": 5e-7,
+      "cacheWriteUsdPerToken": 0.000002
+    },
+    "o4-mini-deep-research-2025-06-26": {
+      "inputUsdPerToken": 0.000002,
+      "outputUsdPerToken": 0.000008,
+      "cacheReadUsdPerToken": 5e-7,
+      "cacheWriteUsdPerToken": 0.000002
+    }
+  }
+}
