@@ -2,6 +2,13 @@
 
 All notable changes to this project are listed here. The format follows [Keep a Changelog](https://keepachangelog.com), and the project uses [Semantic Versioning](https://semver.org).
 
+## [0.1.2] - 2026-11-15
+
+### Added
+
+- `--demo` shows a sample video and card with made-up numbers, clearly labeled.
+- A clearer message when no logs are found: what is supported and what to do next.
+
 ## [0.1.1] - 2026-11-15
 
 ### Added

@@ -1,6 +1,6 @@
 {
   "name": "agentic-wrapped",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Your year with AI coding agents, wrapped. 100% local.",
   "keywords": ["claude-code", "codex", "wrapped", "ai", "coding-agents", "cli", "usage"],
   "license": "MIT",

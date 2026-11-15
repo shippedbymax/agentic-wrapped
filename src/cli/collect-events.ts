@@ -7,6 +7,13 @@ export interface CollectResult {
   unreadableFileCount: number;
 }
 
+export const EMPTY_COLLECT_RESULT: CollectResult = {
+  events: [],
+  fileCountByAgent: new Map(),
+  skippedLineCount: 0,
+  unreadableFileCount: 0,
+};
+
 /** Runs discover + parse for every adapter. One broken file never stops the run. */
 export async function collectEvents(
   adapters: readonly AgentAdapter[],

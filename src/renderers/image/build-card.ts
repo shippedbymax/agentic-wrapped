@@ -111,7 +111,10 @@ export function buildCard(report: WrappedReport): CardElement {
         'AGENTIC WRAPPED',
       ),
       box({ fontSize: 64, fontWeight: 800, marginTop: 6 }, period.headline),
-      box({ fontSize: 26, color: COLOR.muted, marginTop: 6 }, `${agentNames} · ${period.range}`),
+      box(
+        { fontSize: 26, color: COLOR.muted, marginTop: 6 },
+        `${report.isDemo ? 'DEMO DATA · ' : ''}${agentNames} · ${period.range}`,
+      ),
     ),
     box(
       {

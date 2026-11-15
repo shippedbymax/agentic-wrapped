@@ -19,6 +19,8 @@ export interface VideoSlide {
 /** Everything the video player needs. Plain JSON: it is inlined into the HTML file. */
 export interface VideoData {
   year: number;
+  /** True for the built-in sample. The video then says "demo data" on every frame. */
+  isDemo: boolean;
   /** The big word of the intro: `2026` or `30 days`. */
   introTitle: string;
   /** `Oct 17 - Nov 15` */
@@ -64,9 +66,10 @@ export function buildVideoData(report: WrappedReport): VideoData {
 
   return {
     year: stats.year,
+    isDemo: report.isDemo,
     introTitle: period.title,
     range: period.range,
-    shareText: buildShareText(stats),
+    shareText: report.isDemo ? '' : buildShareText(stats),
     agentNames: stats.agents.map((agent) => formatAgentName(agent.agentId)).join(' + '),
     slides,
     tokensByMonth: stats.tokensByMonth,

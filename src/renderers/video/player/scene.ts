@@ -208,7 +208,11 @@ function drawOverlay(
   ctx.globalAlpha = 0.75;
   ctx.textBaseline = 'middle';
   ctx.textAlign = 'left';
-  ctx.fillText('agentic-wrapped', 40, VIDEO_HEIGHT - 50);
+  ctx.fillText(
+    data.isDemo ? 'agentic-wrapped · demo data' : 'agentic-wrapped',
+    40,
+    VIDEO_HEIGHT - 50,
+  );
   ctx.textAlign = 'right';
   ctx.fillText(String(data.year), VIDEO_WIDTH - 40, VIDEO_HEIGHT - 50);
   ctx.globalAlpha = 1;

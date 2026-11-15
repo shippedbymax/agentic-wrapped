@@ -1,4 +1,4 @@
-import type { Renderer, WrappedReport } from '../../core';
+import { REPOSITORY_URL, type Renderer, type WrappedReport } from '../../core';
 import { INTER_FONT_WEIGHTS, readInterFont } from '../shared/inter-font';
 import { PLAYER_SCRIPT } from './player-bundle.generated';
 import { type VideoData, buildVideoData } from './video-data';
@@ -12,9 +12,6 @@ async function buildFontFaces(): Promise<string> {
   );
   return faces.join('\n');
 }
-
-/** The only external reference on the page. Nothing is loaded from it; it opens on click. */
-export const REPOSITORY_URL = 'https://github.com/shippedbymax/agentic-wrapped';
 
 /** JSON that is safe inside a <script> tag. */
 function toInlineJson(data: VideoData): string {

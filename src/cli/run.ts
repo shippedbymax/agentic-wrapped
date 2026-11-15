@@ -7,6 +7,7 @@ import {
   type AgentId,
   DEFAULT_PRICE_TABLE,
   type HostEnvironment,
+  ISSUES_URL,
   PRICE_TABLE_UPDATED_AT,
   buildReport,
   buildShareText,
@@ -16,7 +17,8 @@ import { imageRenderer } from '../renderers/image';
 import { jsonRenderer } from '../renderers/json';
 import { terminalRenderer } from '../renderers/terminal';
 import { videoRenderer } from '../renderers/video';
-import { collectEvents } from './collect-events';
+import { EMPTY_COLLECT_RESULT, collectEvents } from './collect-events';
+import { createDemoEvents } from './demo-events';
 
 /** Everything the CLI needs from the outside world. Injected so the CLI is testable. */
 export interface CliDependencies {
@@ -34,6 +36,7 @@ interface CliOptions {
   output?: string;
   json: boolean;
   image: boolean;
+  demo: boolean;
   video: boolean;
   timeZone: string;
 }
@@ -64,6 +67,7 @@ export async function runCli(argv: readonly string[], deps: CliDependencies): Pr
     .option('-y, --year <year>', 'year to wrap', parseYear, deps.now.getFullYear())
     .addOption(new Option('-a, --agent <agent...>', 'only these agents').choices([...AGENT_IDS]))
     .option('-o, --output <path>', 'where to save the image (the video goes next to it)')
+    .option('--demo', 'show a sample with made-up numbers', false)
     .option('--json', 'print the raw report as JSON instead', false)
     .option('--no-image', 'do not write an image')
     .option('--no-video', 'do not write the video player')
@@ -80,18 +84,30 @@ export async function runCli(argv: readonly string[], deps: CliDependencies): Pr
   const options = program.opts<CliOptions>();
 
   const adapters = options.agent ? options.agent.map(getAdapter) : ALL_ADAPTERS;
-  const collected = await collectEvents(adapters, deps.host);
+  const collected = options.demo
+    ? { ...EMPTY_COLLECT_RESULT, events: createDemoEvents(options.year, deps.now) }
+    : await collectEvents(adapters, deps.host);
   const { report, dropped } = buildReport(collected.events, {
     year: options.year,
     timeZone: options.timeZone,
     priceTable: DEFAULT_PRICE_TABLE,
+    isDemo: options.demo,
   });
 
   if (report.stats.totals.eventCount === 0) {
     const searched = [...collected.fileCountByAgent]
-      .map(([agentName, fileCount]) => `${agentName}: ${fileCount} log files`)
+      .map(([agentName, fileCount]) => `${agentName} (${fileCount} log files)`)
       .join(', ');
-    deps.writeStderr(`No agent activity found for ${options.year}. (${searched})\n`);
+    deps.writeStderr(
+      [
+        `No agent activity found for ${options.year}.`,
+        `  Looked for: ${searched}.`,
+        '  Supported today: Claude Code and Codex CLI, when they run on this computer.',
+        `  Using Cursor, Gemini CLI or another agent? Ask for it or add it: ${ISSUES_URL}`,
+        '  Want to see what you would get? Run: npx agentic-wrapped --demo',
+        '',
+      ].join('\n'),
+    );
     return 1;
   }
 
@@ -110,7 +126,8 @@ export async function runCli(argv: readonly string[], deps: CliDependencies): Pr
     );
   }
 
-  const imagePath = resolve(options.output ?? `agentic-wrapped-${options.year}.png`);
+  const defaultName = `agentic-wrapped-${options.demo ? 'demo' : options.year}.png`;
+  const imagePath = resolve(options.output ?? defaultName);
   const videoPath = `${imagePath.slice(0, imagePath.length - extname(imagePath).length)}.html`;
   if (options.image || options.video) await mkdir(dirname(imagePath), { recursive: true });
   if (options.image) {
@@ -124,6 +141,11 @@ export async function runCli(argv: readonly string[], deps: CliDependencies): Pr
     );
   }
   if (options.image || options.video) deps.writeStdout('  Nothing left your machine.\n\n');
+
+  if (options.demo) {
+    deps.writeStdout('  This was demo data. Run it without --demo to wrap your own numbers.\n\n');
+    return 0;
+  }
 
   const shareLines = buildShareText(report.stats).split('\n');
   deps.writeStdout(`  Post it:\n${shareLines.map((line) => `    ${line}`).join('\n')}\n\n`);

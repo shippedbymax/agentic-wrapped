@@ -2,8 +2,8 @@ import { createCanvas } from '@napi-rs/canvas';
 import { describe, expect, it } from 'vitest';
 import packageJson from '../../../package.json';
 import { TEST_PRICE_TABLE, createEvent } from '../../../test/create-event';
-import { buildReport } from '../../core';
-import { REPOSITORY_URL, videoRenderer } from './index';
+import { REPOSITORY_URL, buildReport } from '../../core';
+import { videoRenderer } from './index';
 import { renderBeat } from './player/beat';
 import { type SceneContext, drawFrame } from './player/scene';
 import {

@@ -136,6 +136,11 @@ saveButton.addEventListener('click', () =>
 );
 
 shareText.value = data.shareText;
+if (data.isDemo) {
+  // Demo numbers are made up: there is nothing honest to post.
+  shareText.value = 'This is demo data. Run it without --demo to get your own numbers.';
+  copyButton.hidden = true;
+}
 copyButton.addEventListener('click', async () => {
   try {
     await navigator.clipboard.writeText(data.shareText);

@@ -73,6 +73,25 @@ describe('agentic-wrapped CLI', () => {
     const { exitCode, stderr } = await run(['--year', '2024', '--no-image', '--no-video']);
     expect(exitCode).toBe(1);
     expect(stderr).toContain('No agent activity found for 2024');
+    expect(stderr).toContain('Claude Code (1 log files)');
+    expect(stderr).toContain('npx agentic-wrapped --demo');
+  });
+
+  it('--demo shows labeled sample data without reading any logs', async () => {
+    const outputPath = join(homeDir, 'demo', 'sample.png');
+    const { exitCode, stdout } = await run(['--demo', '--output', outputPath]);
+    expect(exitCode).toBe(0);
+    expect(stdout).toContain('DEMO DATA');
+    expect(stdout).toContain('Run it without --demo');
+    expect(stdout).not.toContain('Post it:');
+    const page = await readFile(join(homeDir, 'demo', 'sample.html'), 'utf8');
+    expect(page).toContain('"isDemo":true');
+
+    const { stdout: json } = await run(['--demo', '--json']);
+    const report = JSON.parse(json);
+    expect(report.isDemo).toBe(true);
+    expect(report.stats.unpricedModels).toEqual([]);
+    expect(report.stats.totals.totalTokens).toBeGreaterThan(100_000_000);
   });
 
   it('rejects a bad year and a bad time zone', async () => {

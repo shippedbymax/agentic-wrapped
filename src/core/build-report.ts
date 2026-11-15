@@ -9,6 +9,8 @@ export interface BuildReportOptions {
   year: number;
   timeZone: string;
   priceTable: PriceTable;
+  /** Marks the report as made-up sample data. Defaults to false. */
+  isDemo?: boolean;
 }
 
 export interface BuildReportResult {
@@ -23,5 +25,8 @@ export function buildReport(
 ): BuildReportResult {
   const { events, ...dropped } = normalizeEvents(rawEvents, options);
   const stats = computeStats(events, options);
-  return { report: { stats, insights: buildInsights(stats) }, dropped };
+  return {
+    report: { stats, insights: buildInsights(stats), isDemo: options.isDemo ?? false },
+    dropped,
+  };
 }

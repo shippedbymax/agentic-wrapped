@@ -34,4 +34,6 @@ export interface Renderer<TOutput> {
 export interface WrappedReport {
   stats: WrappedStats;
   insights: Insight[];
+  /** True for the built-in sample (`--demo`). Every output must say so. */
+  isDemo: boolean;
 }

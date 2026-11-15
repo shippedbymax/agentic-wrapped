@@ -20,6 +20,7 @@ export type {
   SkippedLineReporter,
   WrappedReport,
 } from './ports';
+export { ISSUES_URL, REPOSITORY_URL } from './project';
 export { DEFAULT_PRICE_TABLE, PRICE_TABLE_UPDATED_AT } from './pricing/price-table';
 export type { ModelPrice, PriceTable } from './pricing/price-table';
 export type {

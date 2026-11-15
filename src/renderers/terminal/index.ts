@@ -24,6 +24,7 @@ function renderTerminalReport(report: WrappedReport): string {
     '',
     pc.bold(pc.magenta(`  ${period.headline}, wrapped`)),
     pc.dim(`  ${period.range}`),
+    ...(report.isDemo ? [pc.yellow('  DEMO DATA: made-up numbers, not yours.')] : []),
     '',
   ];
 

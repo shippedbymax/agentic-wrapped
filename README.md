@@ -38,12 +38,23 @@ npx agentic-wrapped
 - It never reads your prompts or your code. The internal data type has no field for them.
 - Project names are hashed before they leave the log reader. They are only used to count projects.
 
+## No logs on your machine?
+
+The tool only sees agents that run on this computer and keep logs here: Claude Code and Codex CLI today. To see what you would get, run the labeled sample:
+
+```bash
+npx agentic-wrapped --demo
+```
+
+Using Cursor, Gemini CLI or another agent? [Ask for it or add it](https://github.com/shippedbymax/agentic-wrapped/issues).
+
 ## Options
 
 ```text
 -y, --year <year>        year to wrap (default: this year)
 -a, --agent <agent...>   only these agents: claude-code, codex
 -o, --output <path>      where to save the image (the video goes next to it)
+    --demo               show a sample with made-up numbers
     --json               print the raw report as JSON instead
     --no-image           do not write an image
     --no-video           do not write the video page
