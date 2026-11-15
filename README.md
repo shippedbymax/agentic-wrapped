@@ -55,7 +55,7 @@ npx agent-wrapped
 
 ## Known limits
 
-- **Early version.** The log readers are tested against sample logs that follow the documented formats. Real-world logs have more variety; please open an issue with the (anonymized) line that broke.
+- **Early version.** The log readers are tested against sample logs that follow the documented formats. Real-world logs have more variety; please [open an issue](https://github.com/maxnols/agent-wrapped/issues) with the (anonymized) line that broke.
 - **Resumed or forked Codex sessions** can replay earlier usage into a new log file. Such usage may be counted twice.
 - **Memory.** Log files are read as a stream, but all usage events of the year are held in memory to remove duplicates. Very heavy users may need a few hundred MB.
 

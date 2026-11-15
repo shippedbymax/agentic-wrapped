@@ -4,6 +4,15 @@
   "description": "Your year with AI coding agents, wrapped. 100% local.",
   "keywords": ["claude-code", "codex", "wrapped", "ai", "coding-agents", "cli", "usage"],
   "license": "MIT",
+  "author": "maxnols",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maxnols/agent-wrapped.git"
+  },
+  "homepage": "https://github.com/maxnols/agent-wrapped#readme",
+  "bugs": {
+    "url": "https://github.com/maxnols/agent-wrapped/issues"
+  },
   "type": "module",
   "bin": {
     "agent-wrapped": "dist/cli.js"
