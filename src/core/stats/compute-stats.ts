@@ -17,12 +17,20 @@ export interface ComputeStatsOptions {
   priceTable: PriceTable;
 }
 
+/**
+ * A pause longer than this ends a stretch of work. Sessions are often left open
+ * overnight or picked up again days later; that should not count as one long session.
+ */
+const SESSION_BREAK_MS = 30 * 60_000;
+
 interface SessionAccumulator {
   agentId: AgentId;
-  firstTimestampMs: number;
-  lastTimestampMs: number;
   totalTokens: number;
-  date: string;
+  lastTimestampMs: number;
+  stretchStartMs: number;
+  stretchStartDate: string;
+  longestStretchMs: number;
+  longestStretchDate: string;
 }
 
 function createBreakdown(): UsageBreakdown {
@@ -65,7 +73,8 @@ function getOrCreate<TKey, TValue>(
 }
 
 /**
- * Turns normalized events into the year's stats.
+ * Turns normalized events into the year's stats. Expects events sorted by time
+ * (`normalizeEvents` does that).
  * Pure: same events and options always give the same result.
  */
 export function computeStats(
@@ -84,12 +93,14 @@ export function computeStats(
   const eventsByHour = new Array<number>(24).fill(0);
   const eventsByWeekday = new Array<number>(7).fill(0);
   const tokensByMonth = new Array<number>(12).fill(0);
+  const eventsByMonth = new Array<number>(12).fill(0);
 
   for (const event of events) {
-    const eventCostUsd = computeCostUsd(event, options.priceTable);
-    if (eventCostUsd === undefined) unpricedModels.add(event.model);
-    const costUsd = eventCostUsd ?? 0;
     const totalTokens = sumEventTokens(event);
+    const eventCostUsd = computeCostUsd(event, options.priceTable);
+    // An event without tokens costs nothing, so a missing price is not worth reporting.
+    if (eventCostUsd === undefined && totalTokens > 0) unpricedModels.add(event.model);
+    const costUsd = eventCostUsd ?? 0;
     const localTime = readLocalTime(event.timestamp);
     const timestampMs = event.timestamp.getTime();
 
@@ -111,51 +122,69 @@ export function computeStats(
     const day = getOrCreate(daysByDate, localTime.date, () => ({
       date: localTime.date,
       totalTokens: 0,
+      eventCount: 0,
       costUsd: 0,
     }));
     day.totalTokens += totalTokens;
+    day.eventCount += 1;
     day.costUsd += costUsd;
 
     const session = getOrCreate(sessionsById, `${event.agentId}:${event.sessionId}`, () => ({
       agentId: event.agentId,
-      firstTimestampMs: timestampMs,
-      lastTimestampMs: timestampMs,
       totalTokens: 0,
-      date: localTime.date,
+      lastTimestampMs: timestampMs,
+      stretchStartMs: timestampMs,
+      stretchStartDate: localTime.date,
+      longestStretchMs: 0,
+      longestStretchDate: localTime.date,
     }));
-    session.firstTimestampMs = Math.min(session.firstTimestampMs, timestampMs);
-    session.lastTimestampMs = Math.max(session.lastTimestampMs, timestampMs);
     session.totalTokens += totalTokens;
+    if (timestampMs - session.lastTimestampMs > SESSION_BREAK_MS) {
+      session.stretchStartMs = timestampMs;
+      session.stretchStartDate = localTime.date;
+    }
+    session.lastTimestampMs = timestampMs;
+    const stretchMs = timestampMs - session.stretchStartMs;
+    if (stretchMs > session.longestStretchMs) {
+      session.longestStretchMs = stretchMs;
+      session.longestStretchDate = session.stretchStartDate;
+    }
 
     if (event.projectHash) projectHashes.add(event.projectHash);
     eventsByHour[localTime.hour] = (eventsByHour[localTime.hour] ?? 0) + 1;
     eventsByWeekday[localTime.weekdayIndex] = (eventsByWeekday[localTime.weekdayIndex] ?? 0) + 1;
     tokensByMonth[localTime.monthIndex] = (tokensByMonth[localTime.monthIndex] ?? 0) + totalTokens;
+    eventsByMonth[localTime.monthIndex] = (eventsByMonth[localTime.monthIndex] ?? 0) + 1;
   }
 
   let longestSession: SessionStats | undefined;
   for (const session of sessionsById.values()) {
     const agent = agentsById.get(session.agentId);
     if (agent) agent.sessionCount += 1;
-    const durationMs = session.lastTimestampMs - session.firstTimestampMs;
-    if (!longestSession || durationMs > longestSession.durationMs) {
+    if (!longestSession || session.longestStretchMs > longestSession.durationMs) {
       longestSession = {
         agentId: session.agentId,
-        durationMs,
+        durationMs: session.longestStretchMs,
         totalTokens: session.totalTokens,
-        date: session.date,
+        date: session.longestStretchDate,
       };
     }
   }
 
   let busiestDay: DayStats | undefined;
   for (const day of daysByDate.values()) {
-    if (!busiestDay || day.totalTokens > busiestDay.totalTokens) busiestDay = day;
+    const isBusier =
+      !busiestDay ||
+      day.totalTokens > busiestDay.totalTokens ||
+      (day.totalTokens === busiestDay.totalTokens && day.eventCount > busiestDay.eventCount);
+    if (isBusier) busiestDay = day;
   }
 
   const activeDates = [...daysByDate.keys()].sort();
   const allInputTokens = totals.inputTokens + totals.cacheReadTokens + totals.cacheWriteTokens;
-  const byTotalTokensDesc = (a: UsageBreakdown, b: UsageBreakdown) => b.totalTokens - a.totalTokens;
+  // Biggest first. Without token counts (Cursor), the number of replies decides.
+  const byUsageDesc = (a: UsageBreakdown, b: UsageBreakdown) =>
+    b.totalTokens - a.totalTokens || b.eventCount - a.eventCount;
 
   return {
     year: options.year,
@@ -168,13 +197,14 @@ export function computeStats(
     firstActiveDate: activeDates[0],
     lastActiveDate: activeDates[activeDates.length - 1],
     cacheHitRate: allInputTokens === 0 ? 0 : totals.cacheReadTokens / allInputTokens,
-    agents: [...agentsById.values()].sort(byTotalTokensDesc),
-    models: [...modelsByName.values()].sort(byTotalTokensDesc),
+    agents: [...agentsById.values()].sort(byUsageDesc),
+    models: [...modelsByName.values()].sort(byUsageDesc),
     busiestDay,
     longestSession,
     eventsByHour,
     eventsByWeekday,
     tokensByMonth,
+    eventsByMonth,
     unpricedModels: [...unpricedModels].sort(),
   };
 }

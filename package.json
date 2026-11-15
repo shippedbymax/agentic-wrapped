@@ -1,6 +1,6 @@
 {
   "name": "agentic-wrapped",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Your year with AI coding agents, wrapped. 100% local.",
   "keywords": ["claude-code", "codex", "wrapped", "ai", "coding-agents", "cli", "usage"],
   "license": "MIT",
@@ -48,7 +48,7 @@
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
     "@napi-rs/canvas": "^1.1.1",
-    "@types/node": "^20.17.0",
+    "@types/node": "^22.10.0",
     "dependency-cruiser": "^16.8.0",
     "esbuild": "^0.28.2",
     "tsup": "^8.3.5",

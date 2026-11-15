@@ -2,6 +2,7 @@ import {
   type Insight,
   type WrappedReport,
   buildShareText,
+  describeMonthlyActivity,
   describePeriod,
   formatAgentName,
 } from '../../core';
@@ -29,7 +30,9 @@ export interface VideoData {
   /** Ready-to-post text shown under the video. */
   shareText: string;
   slides: VideoSlide[];
-  tokensByMonth: number[];
+  /** Chart title and one value per month (tokens, or replies when there are no tokens). */
+  monthsTitle: string;
+  monthValues: number[];
   busiestDay: string;
   personaName: string;
   personaReason: string;
@@ -49,12 +52,15 @@ export function buildVideoData(report: WrappedReport): VideoData {
   const { stats, insights } = report;
   const find = (id: string) => insights.find((insight) => insight.id === id);
   const period = describePeriod(stats);
+  const monthly = describeMonthlyActivity(stats);
   const slides: VideoSlide[] = [];
 
   const totalTokens = find('total-tokens');
   if (totalTokens) {
     slides.push(toSlide(totalTokens, { target: stats.totals.totalTokens, kind: 'compact' }));
   }
+  const replies = find('ai-replies');
+  if (replies) slides.push(toSlide(replies, { target: stats.totals.eventCount, kind: 'compact' }));
   const cost = find('cost');
   if (cost) slides.push(toSlide(cost, { target: stats.totals.costUsd, kind: 'usd' }));
   const favoriteModel = find('favorite-model');
@@ -72,7 +78,8 @@ export function buildVideoData(report: WrappedReport): VideoData {
     shareText: report.isDemo ? '' : buildShareText(stats),
     agentNames: stats.agents.map((agent) => formatAgentName(agent.agentId)).join(' + '),
     slides,
-    tokensByMonth: stats.tokensByMonth,
+    monthsTitle: monthly.title.toUpperCase(),
+    monthValues: monthly.values,
     busiestDay: find('busiest-day')?.value ?? '',
     personaName: find('persona')?.value ?? 'The Builder',
     personaReason: find('persona')?.detail ?? '',

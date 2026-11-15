@@ -5,6 +5,8 @@ export interface CollectResult {
   fileCountByAgent: Map<string, number>;
   skippedLineCount: number;
   unreadableFileCount: number;
+  /** Why sources could not be read, one line per distinct reason. */
+  warnings: string[];
 }
 
 export const EMPTY_COLLECT_RESULT: CollectResult = {
@@ -12,6 +14,7 @@ export const EMPTY_COLLECT_RESULT: CollectResult = {
   fileCountByAgent: new Map(),
   skippedLineCount: 0,
   unreadableFileCount: 0,
+  warnings: [],
 };
 
 /** Runs discover + parse for every adapter. One broken file never stops the run. */
@@ -23,6 +26,7 @@ export async function collectEvents(
   const fileCountByAgent = new Map<string, number>();
   let skippedLineCount = 0;
   let unreadableFileCount = 0;
+  const warnings = new Set<string>();
 
   for (const adapter of adapters) {
     const sources = await adapter.discover(host);
@@ -34,10 +38,17 @@ export async function collectEvents(
         })) {
           events.push(event);
         }
-      } catch {
+      } catch (error) {
         unreadableFileCount += 1;
+        if (error instanceof Error) warnings.add(error.message);
       }
     }
   }
-  return { events, fileCountByAgent, skippedLineCount, unreadableFileCount };
+  return {
+    events,
+    fileCountByAgent,
+    skippedLineCount,
+    unreadableFileCount,
+    warnings: [...warnings],
+  };
 }

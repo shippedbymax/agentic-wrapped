@@ -3,7 +3,9 @@ import { TEST_PRICE_TABLE, createEvent } from '../../../test/create-event';
 import { computeStats } from '../stats/compute-stats';
 import { buildInsights } from './build-insights';
 import { formatCompactNumber, formatDay, formatDuration, formatUsd } from './format';
+import { describeMonthlyActivity } from './monthly';
 import { pickPersona } from './persona';
+import { buildShareText } from './share-text';
 
 const OPTIONS = { year: 2026, timeZone: 'UTC', priceTable: TEST_PRICE_TABLE };
 const at = (isoTime: string) => createEvent({ timestamp: new Date(isoTime) });
@@ -55,13 +57,38 @@ describe('buildInsights', () => {
     expect(buildInsights(computeStats([], OPTIONS))).toEqual([]);
   });
 
+  it('talks about replies instead of tokens when there are no tokens', () => {
+    const reply = (time: string) =>
+      createEvent({
+        agentId: 'cursor',
+        timestamp: new Date(time),
+        inputTokens: 0,
+        outputTokens: 0,
+      });
+    const stats = computeStats(
+      [reply('2026-03-09T10:00:00Z'), reply('2026-03-09T10:10:00Z')],
+      OPTIONS,
+    );
+    const insights = buildInsights(stats);
+    const byId = Object.fromEntries(insights.map((insight) => [insight.id, insight]));
+    expect(byId['ai-replies']).toMatchObject({ value: '2', detail: 'across 1 session on 1 day' });
+    expect(byId['favorite-model']?.detail).toBe('100% of all replies');
+    expect(byId['busiest-day']?.detail).toBe('2 replies in one day');
+    for (const tokenOnlyId of ['total-tokens', 'cost', 'cache-hit-rate']) {
+      expect(byId[tokenOnlyId]).toBeUndefined();
+    }
+    expect(buildShareText(stats)).toContain('sent me 2 replies');
+    expect(describeMonthlyActivity(stats)).toMatchObject({ title: 'Replies by month' });
+  });
+
   it('builds cards with unique ids', () => {
-    const stats = computeStats([at('2026-03-09T10:00:00Z'), at('2026-03-09T11:00:00Z')], OPTIONS);
+    const stats = computeStats([at('2026-03-09T10:00:00Z'), at('2026-03-09T10:25:00Z')], OPTIONS);
     const insights = buildInsights(stats);
     const ids = insights.map((insight) => insight.id);
     expect(new Set(ids).size).toBe(ids.length);
     expect(ids).toContain('total-tokens');
     expect(ids).toContain('persona');
-    expect(insights.find((insight) => insight.id === 'longest-session')?.value).toBe('1h');
+    expect(insights.find((insight) => insight.id === 'longest-session')?.value).toBe('25m');
+    expect(ids).not.toContain('ai-replies');
   });
 });

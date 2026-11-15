@@ -26,9 +26,11 @@ export interface DayStats {
   /** Local calendar day, `YYYY-MM-DD`. */
   date: string;
   totalTokens: number;
+  eventCount: number;
   costUsd: number;
 }
 
+/** The longest stretch of work inside one session without a long break. */
 export interface SessionStats {
   agentId: AgentId;
   durationMs: number;
@@ -63,6 +65,8 @@ export interface WrappedStats {
   eventsByWeekday: number[];
   /** Total tokens per month, index 0 = January. */
   tokensByMonth: number[];
+  /** Events (model replies) per month, index 0 = January. */
+  eventsByMonth: number[];
   /** Models that have no known price. Their cost is not in `totals.costUsd`. */
   unpricedModels: string[];
 }

@@ -18,7 +18,7 @@ import { buildVideoData } from './video-data';
 const { report } = buildReport(
   [
     createEvent({ eventId: 'a', timestamp: new Date('2026-03-09T10:00:00Z'), outputTokens: 4000 }),
-    createEvent({ eventId: 'b', timestamp: new Date('2026-03-09T11:30:00Z') }),
+    createEvent({ eventId: 'b', timestamp: new Date('2026-03-09T10:20:00Z') }),
   ],
   { year: 2026, timeZone: 'UTC', priceTable: TEST_PRICE_TABLE },
 );

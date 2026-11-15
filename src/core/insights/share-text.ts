@@ -9,7 +9,9 @@ export function buildShareText(stats: WrappedStats): string {
   const period = describePeriod(stats);
   const span = period.isPartial ? `in ${period.title}` : `in ${stats.year}`;
   const lines = [
-    `My AI coding agents burned ${formatCompactNumber(stats.totals.totalTokens)} tokens ${span}.`,
+    stats.totals.totalTokens > 0
+      ? `My AI coding agents burned ${formatCompactNumber(stats.totals.totalTokens)} tokens ${span}.`
+      : `My AI coding agents sent me ${formatCompactNumber(stats.totals.eventCount)} replies ${span}.`,
   ];
   if (stats.totals.costUsd > 0) {
     lines.push(`At API prices that is ${formatUsd(stats.totals.costUsd)}.`);

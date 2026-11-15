@@ -45,7 +45,7 @@ describe('computeStats', () => {
     const stats = computeStats(
       [
         createEvent({ sessionId: 'short', timestamp: new Date('2026-03-09T09:00:00Z') }),
-        createEvent({ sessionId: 'long', timestamp: new Date('2026-03-10T22:00:00Z') }),
+        createEvent({ sessionId: 'long', timestamp: new Date('2026-03-10T23:05:00Z') }),
         createEvent({
           sessionId: 'long',
           timestamp: new Date('2026-03-10T23:30:00Z'),
@@ -54,15 +54,57 @@ describe('computeStats', () => {
       ],
       OPTIONS,
     );
-    expect(stats.longestSession).toMatchObject({ durationMs: 90 * 60_000, date: '2026-03-10' });
+    expect(stats.longestSession).toMatchObject({ durationMs: 25 * 60_000, date: '2026-03-10' });
     expect(stats.busiestDay?.date).toBe('2026-03-10');
     expect(stats.eventsByHour[9]).toBe(1);
-    expect(stats.eventsByHour[23]).toBe(1);
+    expect(stats.eventsByHour[23]).toBe(2);
     expect(stats.eventsByWeekday[0]).toBe(1); // 2026-03-09 is a Monday
     expect(stats.eventsByWeekday[1]).toBe(2);
     expect(stats.tokensByMonth[2]).toBe(stats.totals.totalTokens);
     expect(stats.activeDayCount).toBe(2);
     expect(stats.longestStreakDays).toBe(2);
+  });
+
+  it('ends a stretch of work after a long break, even inside one session', () => {
+    const at = (time: string) => createEvent({ sessionId: 'reused', timestamp: new Date(time) });
+    const stats = computeStats(
+      [
+        at('2026-03-09T09:00:00Z'),
+        at('2026-03-09T09:20:00Z'),
+        // Picked up again two days later: 40 minutes of work.
+        at('2026-03-11T14:00:00Z'),
+        at('2026-03-11T14:25:00Z'),
+        at('2026-03-11T14:40:00Z'),
+      ],
+      OPTIONS,
+    );
+    expect(stats.sessionCount).toBe(1);
+    expect(stats.longestSession).toMatchObject({ durationMs: 40 * 60_000, date: '2026-03-11' });
+  });
+
+  it('counts replies when the events carry no tokens', () => {
+    const reply = (model: string, time: string) =>
+      createEvent({
+        agentId: 'cursor',
+        model,
+        timestamp: new Date(time),
+        inputTokens: 0,
+        outputTokens: 0,
+      });
+    const stats = computeStats(
+      [
+        reply('model-a', '2026-03-09T09:00:00Z'),
+        reply('model-b', '2026-04-02T09:00:00Z'),
+        reply('model-b', '2026-04-02T09:05:00Z'),
+      ],
+      OPTIONS,
+    );
+    expect(stats.totals.totalTokens).toBe(0);
+    expect(stats.models[0]?.model).toBe('model-b');
+    expect(stats.busiestDay).toMatchObject({ date: '2026-04-02', eventCount: 2 });
+    expect(stats.eventsByMonth[3]).toBe(2);
+    // No tokens, no cost: a missing price is not worth a warning.
+    expect(stats.unpricedModels).toEqual([]);
   });
 
   it('buckets days in the given time zone', () => {

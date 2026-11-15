@@ -95,17 +95,17 @@ function drawMonths(ctx: SceneContext, data: VideoData, sceneTimeSec: number): v
   const chartBottom = 1010;
   const chartHeight = 520;
   const slotWidth = (VIDEO_WIDTH - chartLeft * 2) / 12;
-  const maxTokens = Math.max(1, ...data.tokensByMonth);
+  const maxValue = Math.max(1, ...data.monthValues);
 
-  drawRisingText(ctx, 'TOKENS BY MONTH', 300, sceneTimeSec, 0.05, {
+  drawRisingText(ctx, data.monthsTitle, 300, sceneTimeSec, 0.05, {
     size: 46,
     weight: 700,
     color: look.accent,
   });
-  data.tokensByMonth.forEach((tokens, monthIndex) => {
+  data.monthValues.forEach((value, monthIndex) => {
     const grow = easeOutBack(progress(sceneTimeSec, 0.15 + monthIndex * 0.06, 0.5));
-    const isPeak = tokens === maxTokens;
-    const height = Math.max(10, (tokens / maxTokens) * chartHeight) * grow;
+    const isPeak = value === maxValue;
+    const height = Math.max(10, (value / maxValue) * chartHeight) * grow;
     const x = chartLeft + monthIndex * slotWidth;
     ctx.fillStyle = isPeak ? look.accent : look.text;
     ctx.globalAlpha = isPeak ? 1 : 0.85;

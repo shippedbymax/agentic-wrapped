@@ -34,24 +34,25 @@ function renderTerminalReport(report: WrappedReport): string {
     );
   }
 
+  // Bars compare tokens when the logs have them, replies otherwise (Cursor logs no tokens).
+  const hasTokens = stats.totals.totalTokens > 0;
+  const total = hasTokens ? stats.totals.totalTokens : stats.totals.eventCount;
+  const renderRow = (
+    label: string,
+    usage: { totalTokens: number; eventCount: number; costUsd: number },
+  ) => {
+    const amount = hasTokens ? usage.totalTokens : usage.eventCount;
+    const details = [`${formatCompactNumber(amount)} ${hasTokens ? 'tokens' : 'replies'}`];
+    if (usage.costUsd > 0) details.push(pc.dim(formatUsd(usage.costUsd)));
+    return `  ${label.slice(0, LABEL_WIDTH - 1).padEnd(LABEL_WIDTH)}${renderBar(total === 0 ? 0 : amount / total)}  ${details.join('  ')}`;
+  };
+
   lines.push('', pc.bold('  Agents'));
-  for (const agent of stats.agents) {
-    const share = stats.totals.totalTokens === 0 ? 0 : agent.totalTokens / stats.totals.totalTokens;
-    lines.push(
-      `  ${formatAgentName(agent.agentId).padEnd(LABEL_WIDTH)}${renderBar(share)}  ${formatCompactNumber(agent.totalTokens)} tokens  ${pc.dim(formatUsd(agent.costUsd))}`,
-    );
-  }
+  for (const agent of stats.agents) lines.push(renderRow(formatAgentName(agent.agentId), agent));
 
   lines.push('', pc.bold('  Top models'));
   for (const model of stats.models.slice(0, 5)) {
-    const share = stats.totals.totalTokens === 0 ? 0 : model.totalTokens / stats.totals.totalTokens;
-    lines.push(
-      `  ${formatModelName(model.model)
-        .slice(0, LABEL_WIDTH - 1)
-        .padEnd(
-          LABEL_WIDTH,
-        )}${renderBar(share)}  ${formatCompactNumber(model.totalTokens)} tokens  ${pc.dim(formatUsd(model.costUsd))}`,
-    );
+    lines.push(renderRow(formatModelName(model.model), model));
   }
 
   if (stats.unpricedModels.length > 0) {

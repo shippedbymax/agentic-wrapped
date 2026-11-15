@@ -20,7 +20,7 @@ async function run(args: string[]) {
   let stdout = '';
   let stderr = '';
   const deps: CliDependencies = {
-    host: { homeDir, env: {} },
+    host: { homeDir, platform: 'linux', env: {} },
     now: new Date('2026-12-01T12:00:00Z'),
     timeZone: 'UTC',
     version: '0.0.0-test',

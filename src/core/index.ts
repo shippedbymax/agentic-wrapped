@@ -9,6 +9,7 @@ export {
   formatUsd,
 } from './insights/format';
 export type { Insight } from './insights/insight';
+export { describeMonthlyActivity } from './insights/monthly';
 export { describePeriod } from './insights/period';
 export type { Period } from './insights/period';
 export { buildShareText } from './insights/share-text';

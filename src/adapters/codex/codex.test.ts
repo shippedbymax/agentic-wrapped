@@ -4,13 +4,17 @@ import type { UsageEvent } from '../../core';
 import { codexAdapter } from './index';
 
 const FIXTURE_HOME = fileURLToPath(new URL('./fixtures', import.meta.url));
-const HOST = { homeDir: FIXTURE_HOME, env: {} };
+const HOST = { homeDir: FIXTURE_HOME, platform: 'linux', env: {} };
 
 describe('codexAdapter', () => {
   it('discovers rollout logs under ~/.codex/sessions and honors CODEX_HOME', async () => {
     expect(await codexAdapter.discover(HOST)).toHaveLength(1);
     expect(
-      await codexAdapter.discover({ homeDir: FIXTURE_HOME, env: { CODEX_HOME: '/nope' } }),
+      await codexAdapter.discover({
+        homeDir: FIXTURE_HOME,
+        platform: 'linux',
+        env: { CODEX_HOME: '/nope' },
+      }),
     ).toEqual([]);
   });
 

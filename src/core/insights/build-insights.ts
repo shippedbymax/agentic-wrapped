@@ -18,28 +18,53 @@ function pluralize(count: number, noun: string): string {
 
 type InsightRule = (stats: WrappedStats) => Insight | undefined;
 
-const totalTokensInsight: InsightRule = (stats) => ({
-  id: 'total-tokens',
-  title: 'Total tokens',
-  value: formatCompactNumber(stats.totals.totalTokens),
-  detail: `across ${pluralize(stats.sessionCount, 'session')} on ${pluralize(stats.activeDayCount, 'day')}`,
-});
+/** Agents like Cursor log no token counts. Then the report counts replies instead. */
+const hasTokens = (stats: WrappedStats) => stats.totals.totalTokens > 0;
 
-const costInsight: InsightRule = (stats) => ({
-  id: 'cost',
-  title: 'API value',
-  value: formatUsd(stats.totals.costUsd),
-  detail: 'at API list prices',
-});
+const describeActivity = (stats: WrappedStats) =>
+  `across ${pluralize(stats.sessionCount, 'session')} on ${pluralize(stats.activeDayCount, 'day')}`;
+
+const totalTokensInsight: InsightRule = (stats) => {
+  if (!hasTokens(stats)) return undefined;
+  return {
+    id: 'total-tokens',
+    title: 'Total tokens',
+    value: formatCompactNumber(stats.totals.totalTokens),
+    detail: describeActivity(stats),
+  };
+};
+
+const repliesInsight: InsightRule = (stats) => {
+  if (hasTokens(stats)) return undefined;
+  return {
+    id: 'ai-replies',
+    title: 'AI replies',
+    value: formatCompactNumber(stats.totals.eventCount),
+    detail: describeActivity(stats),
+  };
+};
+
+const costInsight: InsightRule = (stats) => {
+  if (stats.totals.costUsd === 0) return undefined;
+  return {
+    id: 'cost',
+    title: 'API value',
+    value: formatUsd(stats.totals.costUsd),
+    detail: 'at API list prices',
+  };
+};
 
 const favoriteModelInsight: InsightRule = (stats) => {
   const favorite = stats.models[0];
   if (!favorite) return undefined;
+  const share = hasTokens(stats)
+    ? `${formatPercent(favorite.totalTokens / stats.totals.totalTokens)} of all tokens`
+    : `${formatPercent(favorite.eventCount / stats.totals.eventCount)} of all replies`;
   return {
     id: 'favorite-model',
     title: 'Favorite model',
     value: formatModelName(favorite.model),
-    detail: `${formatPercent(favorite.totalTokens / stats.totals.totalTokens)} of all tokens`,
+    detail: share,
   };
 };
 
@@ -79,16 +104,21 @@ const busiestDayInsight: InsightRule = (stats) => {
     id: 'busiest-day',
     title: 'Busiest day',
     value: formatDay(day.date),
-    detail: `${formatCompactNumber(day.totalTokens)} tokens in one day`,
+    detail: hasTokens(stats)
+      ? `${formatCompactNumber(day.totalTokens)} tokens in one day`
+      : `${day.eventCount.toLocaleString('en-US')} ${day.eventCount === 1 ? 'reply' : 'replies'} in one day`,
   };
 };
 
-const cacheInsight: InsightRule = (stats) => ({
-  id: 'cache-hit-rate',
-  title: 'Cache hit rate',
-  value: formatPercent(stats.cacheHitRate),
-  detail: 'of input came from cache',
-});
+const cacheInsight: InsightRule = (stats) => {
+  if (stats.totals.cacheReadTokens === 0) return undefined;
+  return {
+    id: 'cache-hit-rate',
+    title: 'Cache hit rate',
+    value: formatPercent(stats.cacheHitRate),
+    detail: 'of input came from cache',
+  };
+};
 
 const personaInsight: InsightRule = (stats) => {
   const persona = pickPersona(stats);
@@ -98,6 +128,7 @@ const personaInsight: InsightRule = (stats) => {
 /** Order here is the order on the card. Add a new card by adding a rule. */
 const INSIGHT_RULES: readonly InsightRule[] = [
   totalTokensInsight,
+  repliesInsight,
   costInsight,
   favoriteModelInsight,
   favoriteAgentInsight,

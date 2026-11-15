@@ -1,4 +1,10 @@
-import { type Insight, type WrappedReport, describePeriod, formatAgentName } from '../../core';
+import {
+  type Insight,
+  type WrappedReport,
+  describeMonthlyActivity,
+  describePeriod,
+  formatAgentName,
+} from '../../core';
 import { type CardElement, box } from './element';
 
 export const CARD_WIDTH = 1080;
@@ -15,14 +21,18 @@ const COLOR = {
 } as const;
 
 const MONTH_LETTERS = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
+/** The first six of these that exist become tiles. Token cards come first when there are tokens. */
 const TILE_INSIGHT_IDS = [
   'total-tokens',
+  'ai-replies',
   'cost',
   'favorite-model',
   'longest-session',
   'streak',
   'busiest-day',
+  'favorite-agent',
 ];
+const TILE_COUNT = 6;
 const CHART_HEIGHT = 110;
 
 function findInsight(insights: readonly Insight[], id: string): Insight | undefined {
@@ -63,18 +73,18 @@ function buildTile(insight: Insight): CardElement {
   );
 }
 
-function buildMonthChart(tokensByMonth: readonly number[]): CardElement {
-  const maxTokens = Math.max(1, ...tokensByMonth);
+function buildMonthChart(monthValues: readonly number[]): CardElement {
+  const maxValue = Math.max(1, ...monthValues);
   return box(
     { justifyContent: 'space-between', alignItems: 'flex-end', width: '100%' },
-    ...tokensByMonth.map((tokens, monthIndex) =>
+    ...monthValues.map((value, monthIndex) =>
       box(
         { flexDirection: 'column', alignItems: 'center' },
         box({
           width: 52,
-          height: Math.max(6, Math.round((tokens / maxTokens) * CHART_HEIGHT)),
+          height: Math.max(6, Math.round((value / maxValue) * CHART_HEIGHT)),
           borderRadius: 10,
-          backgroundColor: tokens === maxTokens ? COLOR.accent : COLOR.accentSoft,
+          backgroundColor: value === maxValue ? COLOR.accent : COLOR.accentSoft,
         }),
         box({ marginTop: 10, fontSize: 20, color: COLOR.muted }, MONTH_LETTERS[monthIndex] ?? ''),
       ),
@@ -86,9 +96,10 @@ function buildMonthChart(tokensByMonth: readonly number[]): CardElement {
 export function buildCard(report: WrappedReport): CardElement {
   const { stats, insights } = report;
   const persona = findInsight(insights, 'persona');
-  const tiles = TILE_INSIGHT_IDS.map((id) => findInsight(insights, id)).filter(
-    (insight): insight is Insight => insight !== undefined,
-  );
+  const tiles = TILE_INSIGHT_IDS.map((id) => findInsight(insights, id))
+    .filter((insight): insight is Insight => insight !== undefined)
+    .slice(0, TILE_COUNT);
+  const monthly = describeMonthlyActivity(stats);
   const period = describePeriod(stats);
   const agentNames = stats.agents.map((agent) => formatAgentName(agent.agentId)).join(' + ');
 
@@ -132,9 +143,9 @@ export function buildCard(report: WrappedReport): CardElement {
       { flexDirection: 'column' },
       box(
         { fontSize: 22, color: COLOR.muted, letterSpacing: 1, marginBottom: 14 },
-        'TOKENS BY MONTH',
+        monthly.title.toUpperCase(),
       ),
-      buildMonthChart(stats.tokensByMonth),
+      buildMonthChart(monthly.values),
     ),
     box(
       { justifyContent: 'space-between', alignItems: 'center', fontSize: 24, color: COLOR.muted },

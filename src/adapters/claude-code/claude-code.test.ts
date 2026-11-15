@@ -4,7 +4,7 @@ import type { UsageEvent } from '../../core';
 import { claudeCodeAdapter } from './index';
 
 const FIXTURE_HOME = fileURLToPath(new URL('./fixtures', import.meta.url));
-const HOST = { homeDir: FIXTURE_HOME, env: {} };
+const HOST = { homeDir: FIXTURE_HOME, platform: 'linux', env: {} };
 
 describe('claudeCodeAdapter', () => {
   it('discovers session logs under ~/.claude/projects', async () => {
@@ -14,7 +14,11 @@ describe('claudeCodeAdapter', () => {
   });
 
   it('honors CLAUDE_CONFIG_DIR and returns nothing for a missing folder', async () => {
-    const host = { homeDir: FIXTURE_HOME, env: { CLAUDE_CONFIG_DIR: '/does/not/exist' } };
+    const host = {
+      homeDir: FIXTURE_HOME,
+      platform: 'linux',
+      env: { CLAUDE_CONFIG_DIR: '/does/not/exist' },
+    };
     expect(await claudeCodeAdapter.discover(host)).toEqual([]);
   });
 

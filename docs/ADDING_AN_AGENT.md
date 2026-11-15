@@ -20,4 +20,5 @@ A new agent is one folder. Use `src/adapters/codex` as a template.
 - **Token kinds.** `inputTokens` is fresh input only. If the provider counts cached tokens inside its input number, subtract them and put them in `cacheReadTokens`.
 - **Cumulative counters.** If the log holds running totals, yield the difference between two lines, not the total.
 - **Never throw on a bad line.** Call `onSkippedLine(reason)` and continue.
+- **Not a text log?** See `src/adapters/cursor`: it reads a SQLite database with Node's built-in `node:sqlite` and lets SQL pick only the metadata fields.
 - **No content.** Do not read prompts, answers, tool output or file names. Hash the project path with `hashProject`.

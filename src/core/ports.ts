@@ -5,6 +5,8 @@ import type { WrappedStats } from './stats/wrapped-stats';
 /** Everything an adapter may know about the machine. Injected, so adapters stay testable. */
 export interface HostEnvironment {
   homeDir: string;
+  /** `win32`, `darwin`, `linux`, ... (Node's `process.platform`). */
+  platform: string;
   env: Readonly<Record<string, string | undefined>>;
 }
 
@@ -17,7 +19,11 @@ export interface LogSource {
 /** Called for every log line that could not be read. Adapters never throw on bad input. */
 export type SkippedLineReporter = (reason: string) => void;
 
-/** Port: turns one agent's local logs into normalized usage events. */
+/**
+ * Port: turns one agent's local logs into normalized usage events.
+ * `parse` skips bad lines quietly; it throws only when the whole source cannot be read,
+ * with a message that is fit to show to the user.
+ */
 export interface AgentAdapter {
   id: AgentId;
   discover(host: HostEnvironment): Promise<LogSource[]>;

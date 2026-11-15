@@ -4,7 +4,7 @@ import { runCli } from './run';
 
 try {
   process.exitCode = await runCli(process.argv.slice(2), {
-    host: { homeDir: homedir(), env: process.env },
+    host: { homeDir: homedir(), platform: process.platform, env: process.env },
     now: new Date(),
     timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     version: packageJson.version,

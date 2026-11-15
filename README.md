@@ -28,25 +28,26 @@ npx agentic-wrapped
 | --- | --- | --- |
 | Claude Code | Supported | `~/.claude/projects`, `~/.config/claude/projects`, `CLAUDE_CONFIG_DIR` |
 | Codex CLI | Supported | `~/.codex/sessions`, `~/.codex/archived_sessions`, `CODEX_HOME` |
-| Cursor, Gemini CLI, others | Wanted | [Add one](docs/ADDING_AN_AGENT.md): it is a single folder |
+| Cursor | Supported (replies and sessions; tokens only where Cursor logs them). Needs Node.js 22.5+ | Cursor's local database `state.vscdb` (opened read-only) |
+| Gemini CLI, others | Wanted | [Add one](docs/ADDING_AN_AGENT.md): it is a single folder |
 
 ## 100% local
 
 - The tool reads log files on your machine and writes two files: an image and a video page. That is all.
 - The video page is self-contained. The animation and the music are generated in your browser; nothing is loaded from the internet. It has one link, to this repository, which only opens when you click it.
 - It has **no network code**. A test fails the build if anyone adds some (`test/no-network.test.ts`).
-- It never reads your prompts or your code. The internal data type has no field for them.
+- It never reads your prompts or your code. The internal data type has no field for them. For Cursor, whose database also holds your chats, the query only asks for time, model and token counts.
 - Project names are hashed before they leave the log reader. They are only used to count projects.
 
 ## No logs on your machine?
 
-The tool only sees agents that run on this computer and keep logs here: Claude Code and Codex CLI today. To see what you would get, run the labeled sample:
+The tool only sees agents that run on this computer and keep logs here: Claude Code, Codex CLI and Cursor today. To see what you would get, run the labeled sample:
 
 ```bash
 npx agentic-wrapped --demo
 ```
 
-Using Cursor, Gemini CLI or another agent? [Ask for it or add it](https://github.com/shippedbymax/agentic-wrapped/issues).
+Using Gemini CLI or another agent? [Ask for it or add it](https://github.com/shippedbymax/agentic-wrapped/issues).
 
 ## Options
 
@@ -64,12 +65,13 @@ Using Cursor, Gemini CLI or another agent? [Ask for it or add it](https://github
 ## About the numbers
 
 - **API value** is what your tokens would cost at public API list prices. If you are on a subscription, you paid less. Prices come from a snapshot bundled with the package (source: [LiteLLM's price list](https://github.com/BerriAI/litellm/blob/main/model_prices_and_context_window.json)); models without a known price are listed and left out of the cost.
-- **Sessions** are the agents' own sessions. A session's length is the time between its first and last model call.
+- **Sessions** are the agents' own sessions. "Longest session" is the longest stretch of work inside one session without a break of more than 30 minutes, so a chat left open overnight does not count as 14 hours.
 - **Agents delete old logs.** Claude Code removes sessions after 30 days by default, so your wrapped can only cover what is still on disk. When there are only a few weeks of data, the video and the card say so ("My 30 days") instead of pretending it is your year. To keep more from now on, set `"cleanupPeriodDays": 365` in `~/.claude/settings.json`.
 
 ## Known limits
 
 - **Early version.** The log readers are tested against sample logs that follow the documented formats. Real-world logs have more variety; please [open an issue](https://github.com/shippedbymax/agentic-wrapped/issues) with the (anonymized) line that broke.
+- **Cursor has no reliable token counts.** Cursor's local database leaves them at zero for most people. If only Cursor data is found, the video counts AI replies and sessions instead of tokens and dollars.
 - **Resumed or forked Codex sessions** can replay earlier usage into a new log file. Such usage may be counted twice.
 - **Memory.** Log files are read as a stream, but all usage events of the year are held in memory to remove duplicates. Very heavy users may need a few hundred MB.
 

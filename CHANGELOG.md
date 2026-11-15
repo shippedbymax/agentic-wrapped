@@ -2,6 +2,16 @@
 
 All notable changes to this project are listed here. The format follows [Keep a Changelog](https://keepachangelog.com), and the project uses [Semantic Versioning](https://semver.org).
 
+## [0.2.0] - 2026-11-15
+
+### Added
+
+- Cursor support. Cursor logs no reliable token counts, so Cursor-only reports count AI replies and sessions instead of tokens and cost.
+
+### Changed
+
+- "Longest session" is now the longest stretch of work without a break of more than 30 minutes.
+
 ## [0.1.2] - 2026-11-15
 
 ### Added

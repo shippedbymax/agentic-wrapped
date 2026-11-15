@@ -1,15 +1,19 @@
 /** Every agent the tool knows about. Add a new id here when adding an adapter. */
-export const AGENT_IDS = ['claude-code', 'codex'] as const;
+export const AGENT_IDS = ['claude-code', 'codex', 'cursor'] as const;
 export type AgentId = (typeof AGENT_IDS)[number];
 
 /** Typed as a full record, so a new `AgentId` without a name fails to compile. */
 export const AGENT_DISPLAY_NAMES: Readonly<Record<AgentId, string>> = {
   'claude-code': 'Claude Code',
   codex: 'Codex',
+  cursor: 'Cursor',
 };
 
 /**
  * One model call, normalized. This is the only shape the core understands.
+ *
+ * Some agents (Cursor) do not log token counts. Their events carry zeros, and the
+ * report then counts replies instead of tokens.
  *
  * Privacy by design: there is no field for prompts, code or file names.
  * What is not in this type cannot end up in the output.

@@ -49,6 +49,7 @@ All of them live in `src/core`:
 - **Pure core.** Year, time zone and prices are passed in. Same input, same output, so tests need no mocks.
 - **Injected environment.** Adapters get `HostEnvironment` (home folder, env vars) and the CLI gets `CliDependencies` (clock, output). Tests run against fixture folders.
 - **Streaming.** Log files can be gigabytes. Adapters read line by line and pre-filter with a cheap string check before `JSON.parse`.
+- **Tokens are optional.** Some agents (Cursor) log no token counts. Their events carry zeros, and insights, card and video switch from tokens to replies when the whole report has no tokens.
 - **Validate at the edge.** Raw log lines are checked with zod in the adapter. Inside the core, types are trusted.
 - **Local by construction.** No network code exists, and `test/no-network.test.ts` keeps it that way. Prices are a bundled snapshot, refreshed at development time with `npm run update-pricing`.
 - **No browser for the image.** satori builds an SVG from a plain element tree, resvg turns it into a PNG.

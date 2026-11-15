@@ -94,6 +94,8 @@ export async function runCli(argv: readonly string[], deps: CliDependencies): Pr
     isDemo: options.demo,
   });
 
+  for (const warning of collected.warnings) deps.writeStderr(`  Note: ${warning}\n`);
+
   if (report.stats.totals.eventCount === 0) {
     const searched = [...collected.fileCountByAgent]
       .map(([agentName, fileCount]) => `${agentName} (${fileCount} log files)`)
@@ -102,8 +104,8 @@ export async function runCli(argv: readonly string[], deps: CliDependencies): Pr
       [
         `No agent activity found for ${options.year}.`,
         `  Looked for: ${searched}.`,
-        '  Supported today: Claude Code and Codex CLI, when they run on this computer.',
-        `  Using Cursor, Gemini CLI or another agent? Ask for it or add it: ${ISSUES_URL}`,
+        '  Supported today: Claude Code, Codex CLI and Cursor, when they run on this computer.',
+        `  Using Gemini CLI or another agent? Ask for it or add it: ${ISSUES_URL}`,
         '  Want to see what you would get? Run: npx agentic-wrapped --demo',
         '',
       ].join('\n'),
@@ -117,7 +119,10 @@ export async function runCli(argv: readonly string[], deps: CliDependencies): Pr
   }
 
   deps.writeStdout(await terminalRenderer.render(report));
-  deps.writeStdout(`  API value uses list prices as of ${PRICE_TABLE_UPDATED_AT}.\n\n`);
+  if (report.stats.totals.costUsd > 0) {
+    deps.writeStdout(`  API value uses list prices as of ${PRICE_TABLE_UPDATED_AT}.\n`);
+  }
+  deps.writeStdout('\n');
 
   const ignoredCount = collected.skippedLineCount + dropped.invalidCount;
   if (ignoredCount > 0 || collected.unreadableFileCount > 0) {
