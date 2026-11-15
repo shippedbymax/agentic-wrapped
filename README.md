@@ -33,7 +33,7 @@ npx agentic-wrapped
 ## 100% local
 
 - The tool reads log files on your machine and writes two files: an image and a video page. That is all.
-- The video page is self-contained. The animation and the music are generated in your browser; nothing is loaded from the internet.
+- The video page is self-contained. The animation and the music are generated in your browser; nothing is loaded from the internet. It has one link, to this repository, which only opens when you click it.
 - It has **no network code**. A test fails the build if anyone adds some (`test/no-network.test.ts`).
 - It never reads your prompts or your code. The internal data type has no field for them.
 - Project names are hashed before they leave the log reader. They are only used to count projects.

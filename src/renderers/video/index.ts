@@ -13,6 +13,9 @@ async function buildFontFaces(): Promise<string> {
   return faces.join('\n');
 }
 
+/** The only external reference on the page. Nothing is loaded from it; it opens on click. */
+export const REPOSITORY_URL = 'https://github.com/shippedbymax/agentic-wrapped';
+
 /** JSON that is safe inside a <script> tag. */
 function toInlineJson(data: VideoData): string {
   return JSON.stringify(data).replace(/</g, '\\u003c');
@@ -36,6 +39,8 @@ button.secondary{background:#26263a;color:#f5f5fa}
 button:disabled{opacity:.5;cursor:default}
 p{margin:0;min-height:1.4em;color:#8b8ba7;font-size:15px}
 .share{display:flex;flex-direction:column;align-items:center;gap:10px;width:min(100%,460px)}
+a{color:#cdf564;font:700 15px Inter,system-ui,sans-serif;text-decoration:none}
+a:hover{text-decoration:underline}
 textarea{width:100%;resize:none;padding:14px;border:1px solid #26263a;border-radius:14px;background:#161625;color:#f5f5fa;font:400 15px/1.45 Inter,system-ui,sans-serif}
 </style>
 </head>
@@ -50,6 +55,7 @@ textarea{width:100%;resize:none;padding:14px;border:1px solid #26263a;border-rad
 <textarea id="share-text" readonly rows="6"></textarea>
 <button id="copy" type="button" class="secondary">Copy post text</button>
 </div>
+<a href="${REPOSITORY_URL}" target="_blank" rel="noopener noreferrer">★ Like it? Star agentic-wrapped on GitHub</a>
 <script>window.__AGENTIC_WRAPPED__=${toInlineJson(data)};</script>
 <script>${PLAYER_SCRIPT.replace(/<\/script/gi, '<\\/script')}</script>
 </body>

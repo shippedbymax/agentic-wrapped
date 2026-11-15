@@ -1,8 +1,9 @@
 import { createCanvas } from '@napi-rs/canvas';
 import { describe, expect, it } from 'vitest';
+import packageJson from '../../../package.json';
 import { TEST_PRICE_TABLE, createEvent } from '../../../test/create-event';
 import { buildReport } from '../../core';
-import { videoRenderer } from './index';
+import { REPOSITORY_URL, videoRenderer } from './index';
 import { renderBeat } from './player/beat';
 import { type SceneContext, drawFrame } from './player/scene';
 import {
@@ -105,7 +106,10 @@ describe('videoRenderer', () => {
     const page = await videoRenderer.render(report);
     expect(page).toContain('<canvas id="stage">');
     expect(page).toContain('"personaName"');
-    expect(page).not.toContain('://');
+    // One link to the repository is allowed. It opens on click and loads nothing.
+    expect(page).toContain(`<a href="${REPOSITORY_URL}"`);
+    expect(page.replace(REPOSITORY_URL, '')).not.toContain('://');
+    expect(packageJson.repository.url).toBe(`git+${REPOSITORY_URL}.git`);
     expect(page).not.toMatch(/<script[^>]+src=|<link/);
   });
 });
