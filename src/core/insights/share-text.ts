@@ -2,7 +2,7 @@ import type { WrappedStats } from '../stats/wrapped-stats';
 import { formatCompactNumber, formatUsd } from './format';
 import { describePeriod } from './period';
 
-export const SHARE_HASHTAG = '#AgentWrapped';
+export const SHARE_HASHTAG = '#AgenticWrapped';
 
 /** A ready-to-post text with the user's headline numbers. */
 export function buildShareText(stats: WrappedStats): string {
@@ -14,6 +14,6 @@ export function buildShareText(stats: WrappedStats): string {
   if (stats.totals.costUsd > 0) {
     lines.push(`At API prices that is ${formatUsd(stats.totals.costUsd)}.`);
   }
-  lines.push('', "What's your number?", '', `npx agent-wrapped ${SHARE_HASHTAG}`);
+  lines.push('', "What's your number?", '', `npx agentic-wrapped ${SHARE_HASHTAG}`);
   return lines.join('\n');
 }

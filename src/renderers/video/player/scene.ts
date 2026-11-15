@@ -28,7 +28,7 @@ const MONTH_LETTERS = 'JFMAMJJASOND';
 
 function drawIntro(ctx: SceneContext, data: VideoData, sceneTimeSec: number): void {
   const look = INTRO_LOOK;
-  drawRisingText(ctx, 'AGENT WRAPPED', 430, sceneTimeSec, 0.05, {
+  drawRisingText(ctx, 'AGENTIC WRAPPED', 430, sceneTimeSec, 0.05, {
     size: 44,
     weight: 700,
     color: look.accent,
@@ -162,7 +162,7 @@ function drawPersona(ctx: SceneContext, data: VideoData, sceneTimeSec: number): 
     ctx.fillStyle = '#0b0b12';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText('npx agent-wrapped', 0, 2);
+    ctx.fillText('npx agentic-wrapped', 0, 2);
     ctx.restore();
   }
   drawRisingText(ctx, 'Get yours. 100% local.', 1130, sceneTimeSec, 1.45, {
@@ -208,7 +208,7 @@ function drawOverlay(
   ctx.globalAlpha = 0.75;
   ctx.textBaseline = 'middle';
   ctx.textAlign = 'left';
-  ctx.fillText('agent-wrapped', 40, VIDEO_HEIGHT - 50);
+  ctx.fillText('agentic-wrapped', 40, VIDEO_HEIGHT - 50);
   ctx.textAlign = 'right';
   ctx.fillText(String(data.year), VIDEO_WIDTH - 40, VIDEO_HEIGHT - 50);
   ctx.globalAlpha = 1;

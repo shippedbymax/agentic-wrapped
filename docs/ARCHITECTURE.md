@@ -1,6 +1,6 @@
 # Architecture
 
-agent-wrapped is a one-way pipeline built as **ports and adapters**: the stable part sits in the middle, everything that changes sits outside.
+agentic-wrapped is a one-way pipeline built as **ports and adapters**: the stable part sits in the middle, everything that changes sits outside.
 
 ```text
           adapters                      core (pure)                     renderers

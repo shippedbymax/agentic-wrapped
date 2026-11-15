@@ -10,7 +10,7 @@ exports[`renderers > image: same report gives the same card 1`] = `
             {
               "props": {
                 "children": [
-                  "AGENT WRAPPED",
+                  "AGENTIC WRAPPED",
                 ],
                 "style": {
                   "color": "#c084fc",
@@ -951,7 +951,7 @@ exports[`renderers > image: same report gives the same card 1`] = `
             {
               "props": {
                 "children": [
-                  "npx agent-wrapped",
+                  "npx agentic-wrapped",
                 ],
                 "style": {
                   "color": "#f5f5fa",

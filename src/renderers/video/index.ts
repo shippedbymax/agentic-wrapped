@@ -24,7 +24,7 @@ function buildVideoPage(data: VideoData, fontFaces: string): string {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Agent Wrapped ${data.year}</title>
+<title>Agentic Wrapped ${data.year}</title>
 <style>
 ${fontFaces}
 *{box-sizing:border-box}
@@ -50,7 +50,7 @@ textarea{width:100%;resize:none;padding:14px;border:1px solid #26263a;border-rad
 <textarea id="share-text" readonly rows="6"></textarea>
 <button id="copy" type="button" class="secondary">Copy post text</button>
 </div>
-<script>window.__AGENT_WRAPPED__=${toInlineJson(data)};</script>
+<script>window.__AGENTIC_WRAPPED__=${toInlineJson(data)};</script>
 <script>${PLAYER_SCRIPT.replace(/<\/script/gi, '<\\/script')}</script>
 </body>
 </html>

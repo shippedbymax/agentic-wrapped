@@ -1,25 +1,25 @@
-# agent-wrapped
+# agentic-wrapped
 
 **Your year with AI coding agents, wrapped.** One command. A 20-second video and a card to share. 100% local.
 
 ```bash
-npx agent-wrapped
+npx agentic-wrapped
 ```
 
 <p align="center">
-  <a href="https://github.com/shippedbymax/agent-wrapped/raw/main/docs/demo.mp4">
+  <a href="https://github.com/shippedbymax/agentic-wrapped/raw/main/docs/demo.mp4">
     <img src="docs/demo.gif" alt="Example video: animated slides with total tokens, API value, favorite model, longest session, streak, tokens by month and your coding type" width="360">
   </a>
   <br>
-  <sub>Made from demo data. The real clip has a beat: <a href="https://github.com/shippedbymax/agent-wrapped/raw/main/docs/demo.mp4">watch it with sound</a>.</sub>
+  <sub>Made from demo data. The real clip has a beat: <a href="https://github.com/shippedbymax/agentic-wrapped/raw/main/docs/demo.mp4">watch it with sound</a>.</sub>
 </p>
 
 ## What you get
 
-- **A 20-second video with a beat** (`agent-wrapped-2026.html`): open it in your browser, press play, press **Save video** and you get an MP4 to post (Chrome and Safari; Firefox saves WebM). It is one self-contained file: no server, no external files.
-- **A card to share** (`agent-wrapped-2026.png`, 1080×1350): total tokens, API value, favorite model, longest session, longest streak, busiest day, your coding type and a month-by-month chart.
+- **A 20-second video with a beat** (`agentic-wrapped-2026.html`): open it in your browser, press play, press **Save video** and you get an MP4 to post (Chrome and Safari; Firefox saves WebM). It is one self-contained file: no server, no external files.
+- **A card to share** (`agentic-wrapped-2026.png`, 1080×1350): total tokens, API value, favorite model, longest session, longest streak, busiest day, your coding type and a month-by-month chart.
 - **A summary in your terminal**, with a breakdown per agent and per model.
-- **A text to post**, with your numbers and `#AgentWrapped`, printed in the terminal and next to the video.
+- **A text to post**, with your numbers and `#AgenticWrapped`, printed in the terminal and next to the video.
 - **Raw numbers as JSON** with `--json`, if you want to build your own thing.
 
 ## Supported agents
@@ -58,7 +58,7 @@ npx agent-wrapped
 
 ## Known limits
 
-- **Early version.** The log readers are tested against sample logs that follow the documented formats. Real-world logs have more variety; please [open an issue](https://github.com/shippedbymax/agent-wrapped/issues) with the (anonymized) line that broke.
+- **Early version.** The log readers are tested against sample logs that follow the documented formats. Real-world logs have more variety; please [open an issue](https://github.com/shippedbymax/agentic-wrapped/issues) with the (anonymized) line that broke.
 - **Resumed or forked Codex sessions** can replay earlier usage into a new log file. Such usage may be counted twice.
 - **Memory.** Log files are read as a stream, but all usage events of the year are held in memory to remove duplicates. Very heavy users may need a few hundred MB.
 

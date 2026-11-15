@@ -5,7 +5,7 @@
  * Usage:
  *   tsx scripts/render-preview.ts frames <out-dir> <time-sec...>   # PNG stills
  *   tsx scripts/render-preview.ts video <out.mp4>                  # full clip with sound
- * Reads the report from `agent-wrapped --json` on stdin.
+ * Reads the report from `agentic-wrapped --json` on stdin.
  */
 import { spawn } from 'node:child_process';
 import { mkdir, rm, writeFile } from 'node:fs/promises';
@@ -70,7 +70,7 @@ if (mode === 'frames') {
     await writeFile(join(target, `frame-${time}.png`), canvas.toBuffer('image/png'));
   }
 } else {
-  const wavPath = join(tmpdir(), `agent-wrapped-beat-${process.pid}.wav`);
+  const wavPath = join(tmpdir(), `agentic-wrapped-beat-${process.pid}.wav`);
   await writeFile(wavPath, encodeWav(renderBeat(SAMPLE_RATE, countScenes(data))));
   const ffmpeg = spawn(
     'ffmpeg',

@@ -49,7 +49,7 @@ describe('buildShareText', () => {
   it('uses the real numbers and the honest time span', () => {
     const text = buildShareText(statsFor('2026-10-17', '2026-11-15'));
     expect(text).toContain('burned 300 tokens in 30 days.');
-    expect(text).toContain('npx agent-wrapped #AgentWrapped');
+    expect(text).toContain('npx agentic-wrapped #AgenticWrapped');
     expect(buildShareText(statsFor('2026-01-10', '2026-11-15'))).toContain('in 2026.');
   });
 

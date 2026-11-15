@@ -12,7 +12,7 @@ const FIXTURE_DIRS = ['claude-code', 'codex'].map((agent) =>
 let homeDir: string;
 
 beforeAll(async () => {
-  homeDir = await mkdtemp(join(tmpdir(), 'agent-wrapped-home-'));
+  homeDir = await mkdtemp(join(tmpdir(), 'agentic-wrapped-home-'));
   for (const fixtureDir of FIXTURE_DIRS) await cp(fixtureDir, homeDir, { recursive: true });
 });
 
@@ -35,7 +35,7 @@ async function run(args: string[]) {
   return { exitCode, stdout, stderr };
 }
 
-describe('agent-wrapped CLI', () => {
+describe('agentic-wrapped CLI', () => {
   it('--json prints deduplicated totals across both agents', async () => {
     const { exitCode, stdout } = await run(['--json']);
     expect(exitCode).toBe(0);
@@ -54,7 +54,7 @@ describe('agent-wrapped CLI', () => {
     expect(exitCode).toBe(0);
     expect(stdout).toContain('Total tokens');
     expect(stdout).toContain('My 1 day with AI agents');
-    expect(stdout).toContain('#AgentWrapped');
+    expect(stdout).toContain('#AgenticWrapped');
     expect(stdout).toContain('cleanupPeriodDays');
     expect(stdout).toContain(outputPath);
     expect(stderr).toContain('Skipped 2 unreadable log lines');

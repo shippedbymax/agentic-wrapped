@@ -28,7 +28,7 @@ jobs:
         shell: bash
         run: |
           VERSION=$(node -p "require('./package.json').version")
-          if npm view "agent-wrapped@$VERSION" version >/dev/null 2>&1; then
+          if npm view "agentic-wrapped@$VERSION" version >/dev/null 2>&1; then
             echo "Version $VERSION is already on npm. Nothing to do."
             echo "is_new=false" >> "$GITHUB_OUTPUT"
           else

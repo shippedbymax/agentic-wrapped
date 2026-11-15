@@ -1,5 +1,5 @@
 {
-  "name": "agent-wrapped",
+  "name": "agentic-wrapped",
   "version": "0.1.0",
   "description": "Your year with AI coding agents, wrapped. 100% local.",
   "keywords": ["claude-code", "codex", "wrapped", "ai", "coding-agents", "cli", "usage"],
@@ -7,15 +7,15 @@
   "author": "shippedbymax",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/shippedbymax/agent-wrapped.git"
+    "url": "git+https://github.com/shippedbymax/agentic-wrapped.git"
   },
-  "homepage": "https://github.com/shippedbymax/agent-wrapped#readme",
+  "homepage": "https://github.com/shippedbymax/agentic-wrapped#readme",
   "bugs": {
-    "url": "https://github.com/shippedbymax/agent-wrapped/issues"
+    "url": "https://github.com/shippedbymax/agentic-wrapped/issues"
   },
   "type": "module",
   "bin": {
-    "agent-wrapped": "dist/cli.js"
+    "agentic-wrapped": "dist/cli.js"
   },
   "files": ["dist", "README.md", "LICENSE"],
   "engines": {

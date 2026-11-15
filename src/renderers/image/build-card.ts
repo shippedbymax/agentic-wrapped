@@ -108,7 +108,7 @@ export function buildCard(report: WrappedReport): CardElement {
       { flexDirection: 'column' },
       box(
         { fontSize: 28, color: COLOR.accent, fontWeight: 700, letterSpacing: 4 },
-        'AGENT WRAPPED',
+        'AGENTIC WRAPPED',
       ),
       box({ fontSize: 64, fontWeight: 800, marginTop: 6 }, period.headline),
       box({ fontSize: 26, color: COLOR.muted, marginTop: 6 }, `${agentNames} · ${period.range}`),
@@ -136,7 +136,7 @@ export function buildCard(report: WrappedReport): CardElement {
     box(
       { justifyContent: 'space-between', alignItems: 'center', fontSize: 24, color: COLOR.muted },
       box({}, 'Get yours:'),
-      box({ color: COLOR.text, fontWeight: 700 }, 'npx agent-wrapped'),
+      box({ color: COLOR.text, fontWeight: 700 }, 'npx agentic-wrapped'),
     ),
   );
 }

@@ -14,6 +14,6 @@ try {
 } catch (error) {
   // Anything unexpected (for example a read-only output folder): one clear line, no stack trace.
   const reason = error instanceof Error ? error.message : String(error);
-  process.stderr.write(`agent-wrapped failed: ${reason}\n`);
+  process.stderr.write(`agentic-wrapped failed: ${reason}\n`);
   process.exitCode = 1;
 }

@@ -58,7 +58,7 @@ function parseTimeZone(value: string): string {
 /** Runs the CLI. Returns the process exit code. */
 export async function runCli(argv: readonly string[], deps: CliDependencies): Promise<number> {
   const program = new Command()
-    .name('agent-wrapped')
+    .name('agentic-wrapped')
     .description('Your year with AI coding agents, wrapped. 100% local.')
     .version(deps.version)
     .option('-y, --year <year>', 'year to wrap', parseYear, deps.now.getFullYear())
@@ -110,7 +110,7 @@ export async function runCli(argv: readonly string[], deps: CliDependencies): Pr
     );
   }
 
-  const imagePath = resolve(options.output ?? `agent-wrapped-${options.year}.png`);
+  const imagePath = resolve(options.output ?? `agentic-wrapped-${options.year}.png`);
   const videoPath = `${imagePath.slice(0, imagePath.length - extname(imagePath).length)}.html`;
   if (options.image || options.video) await mkdir(dirname(imagePath), { recursive: true });
   if (options.image) {

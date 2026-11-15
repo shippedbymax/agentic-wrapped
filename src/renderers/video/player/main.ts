@@ -9,7 +9,7 @@ import { VIDEO_FPS, VIDEO_HEIGHT, VIDEO_WIDTH, countScenes, getVideoDurationSec 
 
 declare global {
   interface Window {
-    __AGENT_WRAPPED__: VideoData;
+    __AGENTIC_WRAPPED__: VideoData;
   }
 }
 
@@ -27,7 +27,7 @@ function getElement<TElement extends HTMLElement>(id: string): TElement {
   return element as TElement;
 }
 
-const data = window.__AGENT_WRAPPED__;
+const data = window.__AGENTIC_WRAPPED__;
 const durationSec = getVideoDurationSec(data);
 const canvas = getElement<HTMLCanvasElement>('stage');
 const playButton = getElement<HTMLButtonElement>('play');
@@ -111,7 +111,7 @@ async function saveVideo(): Promise<void> {
 
   const link = document.createElement('a');
   link.href = URL.createObjectURL(new Blob(chunks, { type: format.mimeType }));
-  link.download = `agent-wrapped-${data.year}.${format.extension}`;
+  link.download = `agentic-wrapped-${data.year}.${format.extension}`;
   link.click();
   statusLine.textContent =
     format.extension === 'mp4'
