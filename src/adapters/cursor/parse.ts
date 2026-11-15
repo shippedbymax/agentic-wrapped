@@ -1,9 +1,7 @@
 import type { LogSource, SkippedLineReporter, UsageEvent } from '../../core';
+import { toProviderModelName } from './model-name';
 import { openReadOnlyDatabase } from './open-database';
 import { cursorReplyRowSchema } from './schema';
-
-/** Cursor often stores no model name ("auto" mode). */
-const UNKNOWN_MODEL = 'cursor-auto';
 
 /**
  * Reads only metadata of AI replies (type 2): time, model and token counts.
@@ -56,7 +54,7 @@ export async function* parseCursorLog(
       agentId: 'cursor',
       sessionId: conversationId,
       timestamp: new Date(reply.createdAt),
-      model: reply.model || UNKNOWN_MODEL,
+      model: toProviderModelName(reply.model),
       inputTokens: Math.max(0, reply.inputTokens ?? 0),
       outputTokens: Math.max(0, reply.outputTokens ?? 0),
       cacheReadTokens: 0,

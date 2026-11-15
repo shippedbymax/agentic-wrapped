@@ -92,6 +92,7 @@ export function computeStats(
   const unpricedModels = new Set<string>();
   const eventsByHour = new Array<number>(24).fill(0);
   const eventsByWeekday = new Array<number>(7).fill(0);
+  let pricedTokens = 0;
   const tokensByMonth = new Array<number>(12).fill(0);
   const eventsByMonth = new Array<number>(12).fill(0);
 
@@ -100,6 +101,7 @@ export function computeStats(
     const eventCostUsd = computeCostUsd(event, options.priceTable);
     // An event without tokens costs nothing, so a missing price is not worth reporting.
     if (eventCostUsd === undefined && totalTokens > 0) unpricedModels.add(event.model);
+    if (eventCostUsd !== undefined) pricedTokens += totalTokens;
     const costUsd = eventCostUsd ?? 0;
     const localTime = readLocalTime(event.timestamp);
     const timestampMs = event.timestamp.getTime();
@@ -205,6 +207,7 @@ export function computeStats(
     eventsByWeekday,
     tokensByMonth,
     eventsByMonth,
+    pricedTokenShare: totals.totalTokens === 0 ? 0 : pricedTokens / totals.totalTokens,
     unpricedModels: [...unpricedModels].sort(),
   };
 }

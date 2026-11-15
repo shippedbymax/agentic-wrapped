@@ -1,4 +1,5 @@
 import type { WrappedStats } from '../stats/wrapped-stats';
+import { isCostReliable } from './cost';
 import { formatCompactNumber, formatUsd } from './format';
 import { describePeriod } from './period';
 
@@ -13,7 +14,7 @@ export function buildShareText(stats: WrappedStats): string {
       ? `My AI coding agents burned ${formatCompactNumber(stats.totals.totalTokens)} tokens ${span}.`
       : `My AI coding agents sent me ${formatCompactNumber(stats.totals.eventCount)} replies ${span}.`,
   ];
-  if (stats.totals.costUsd > 0) {
+  if (isCostReliable(stats)) {
     lines.push(`At API prices that is ${formatUsd(stats.totals.costUsd)}.`);
   }
   lines.push('', "What's your number?", '', `npx agentic-wrapped ${SHARE_HASHTAG}`);

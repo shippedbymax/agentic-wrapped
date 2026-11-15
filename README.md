@@ -71,6 +71,7 @@ Using Gemini CLI or another agent? [Ask for it or add it](https://github.com/shi
 ## Known limits
 
 - **Early version.** The log readers are tested against sample logs that follow the documented formats. Real-world logs have more variety; please [open an issue](https://github.com/shippedbymax/agentic-wrapped/issues) with the (anonymized) line that broke.
+- **Cursor "auto" has no price.** When Cursor picks the model itself, the logs do not say which one it was. If more than 10% of your tokens have no known price, the API value is left out instead of showing a number that is far too low.
 - **Cursor has no reliable token counts.** Cursor's local database leaves them at zero for most people. If only Cursor data is found, the video counts AI replies and sessions instead of tokens and dollars.
 - **Resumed or forked Codex sessions** can replay earlier usage into a new log file. Such usage may be counted twice.
 - **Memory.** Log files are read as a stream, but all usage events of the year are held in memory to remove duplicates. Very heavy users may need a few hundred MB.

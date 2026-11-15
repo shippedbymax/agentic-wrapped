@@ -2,6 +2,13 @@
 
 All notable changes to this project are listed here. The format follows [Keep a Changelog](https://keepachangelog.com), and the project uses [Semantic Versioning](https://semver.org).
 
+## [0.2.1] - 2026-11-15
+
+### Fixed
+
+- Cursor's model names (`claude-4.6-opus-high-thinking`) are translated to the providers' names, so they get a price.
+- The API value is no longer shown when most tokens have no known price (Cursor's "auto" mode). A dollar value that covers a few percent of the usage was misleading.
+
 ## [0.2.0] - 2026-11-15
 
 ### Added

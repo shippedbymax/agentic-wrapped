@@ -67,6 +67,8 @@ export interface WrappedStats {
   tokensByMonth: number[];
   /** Events (model replies) per month, index 0 = January. */
   eventsByMonth: number[];
+  /** Share of all tokens that could be priced, 0..1. Low values make `totals.costUsd` meaningless. */
+  pricedTokenShare: number;
   /** Models that have no known price. Their cost is not in `totals.costUsd`. */
   unpricedModels: string[];
 }

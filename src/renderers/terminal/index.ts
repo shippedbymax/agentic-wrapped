@@ -6,7 +6,9 @@ import {
   formatAgentName,
   formatCompactNumber,
   formatModelName,
+  formatPercent,
   formatUsd,
+  isCostReliable,
 } from '../../core';
 
 const LABEL_WIDTH = 20;
@@ -51,15 +53,26 @@ function renderTerminalReport(report: WrappedReport): string {
   for (const agent of stats.agents) lines.push(renderRow(formatAgentName(agent.agentId), agent));
 
   lines.push('', pc.bold('  Top models'));
-  for (const model of stats.models.slice(0, 5)) {
+  const usedModels = stats.models.filter(
+    (model) => (hasTokens ? model.totalTokens : model.eventCount) > 0,
+  );
+  for (const model of usedModels.slice(0, 5)) {
     lines.push(renderRow(formatModelName(model.model), model));
   }
 
   if (stats.unpricedModels.length > 0) {
+    const unpricedShare = formatPercent(1 - stats.pricedTokenShare);
     lines.push(
       '',
-      pc.yellow(`  No price known for: ${stats.unpricedModels.join(', ')} (not in the cost).`),
+      pc.yellow(
+        `  No price known for: ${stats.unpricedModels.join(', ')} (${unpricedShare} of your tokens).`,
+      ),
     );
+    if (stats.totals.totalTokens > 0 && !isCostReliable(stats)) {
+      lines.push(
+        pc.yellow('  That is too much to state an API value, so the card and video leave it out.'),
+      );
+    }
   }
   lines.push('');
   return lines.join('\n');

@@ -1,4 +1,5 @@
 import type { WrappedStats } from '../stats/wrapped-stats';
+import { isCostReliable } from './cost';
 import {
   formatAgentName,
   formatCompactNumber,
@@ -45,7 +46,7 @@ const repliesInsight: InsightRule = (stats) => {
 };
 
 const costInsight: InsightRule = (stats) => {
-  if (stats.totals.costUsd === 0) return undefined;
+  if (!isCostReliable(stats)) return undefined;
   return {
     id: 'cost',
     title: 'API value',

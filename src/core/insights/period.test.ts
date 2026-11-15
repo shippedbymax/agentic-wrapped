@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { TEST_PRICE_TABLE, createEvent } from '../../../test/create-event';
 import { computeStats } from '../stats/compute-stats';
+import { buildInsights } from './build-insights';
 import { describePeriod } from './period';
 import { buildShareText } from './share-text';
 
@@ -51,6 +52,17 @@ describe('buildShareText', () => {
     expect(text).toContain('burned 300 tokens in 30 days.');
     expect(text).toContain('npx agentic-wrapped #AgenticWrapped');
     expect(buildShareText(statsFor('2026-01-10', '2026-11-15'))).toContain('in 2026.');
+  });
+
+  it('leaves out the price when most tokens have no known price', () => {
+    const stats = computeStats(
+      [createEvent({ model: 'mystery', outputTokens: 9000 }), createEvent({ outputTokens: 100 })],
+      OPTIONS,
+    );
+    expect(stats.totals.costUsd).toBeGreaterThan(0);
+    expect(stats.pricedTokenShare).toBeLessThan(0.1);
+    expect(buildShareText(stats)).not.toContain('API prices');
+    expect(buildInsights(stats).map((insight) => insight.id)).not.toContain('cost');
   });
 
   it('leaves out the price when no model has a known price', () => {

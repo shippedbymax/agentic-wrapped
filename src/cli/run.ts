@@ -12,6 +12,7 @@ import {
   buildReport,
   buildShareText,
   describePeriod,
+  isCostReliable,
 } from '../core';
 import { imageRenderer } from '../renderers/image';
 import { jsonRenderer } from '../renderers/json';
@@ -119,7 +120,7 @@ export async function runCli(argv: readonly string[], deps: CliDependencies): Pr
   }
 
   deps.writeStdout(await terminalRenderer.render(report));
-  if (report.stats.totals.costUsd > 0) {
+  if (isCostReliable(report.stats)) {
     deps.writeStdout(`  API value uses list prices as of ${PRICE_TABLE_UPDATED_AT}.\n`);
   }
   deps.writeStdout('\n');

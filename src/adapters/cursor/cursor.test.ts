@@ -5,6 +5,7 @@ import { join } from 'node:path';
 import { beforeAll, describe, expect, it } from 'vitest';
 import type { UsageEvent } from '../../core';
 import { cursorAdapter } from './index';
+import { toProviderModelName } from './model-name';
 import { NODE_TOO_OLD_MESSAGE } from './open-database';
 
 // `node:sqlite` exists from Node 22.5 on. Older versions run the "too old" test instead.
@@ -51,7 +52,7 @@ beforeAll(async () => {
     type: 2,
     text: 'SECRET ANSWER',
     createdAt: '2026-03-09T09:00:20.000Z',
-    modelInfo: { modelName: 'claude-4.5-sonnet' },
+    modelInfo: { modelName: 'claude-4.5-sonnet-high-thinking' },
     tokenCount: { inputTokens: 0, outputTokens: 0 },
   });
   bubble('bubbleId:chat-1:b3', {
@@ -68,6 +69,20 @@ beforeAll(async () => {
   bubble('composerData:chat-1', { createdAt: 1, type: 2 });
   bubble('agentKv:blob:abc', { role: 'assistant', content: 'SECRET' });
   database.close();
+});
+
+describe('toProviderModelName', () => {
+  it("translates Cursor's model names into the providers' names", () => {
+    expect(toProviderModelName('claude-4.6-opus-high-thinking')).toBe('claude-opus-4-6');
+    expect(toProviderModelName('claude-4.5-opus-high')).toBe('claude-opus-4-5');
+    expect(toProviderModelName('claude-4-sonnet')).toBe('claude-sonnet-4');
+    expect(toProviderModelName('gpt-5.4-medium')).toBe('gpt-5.4');
+    expect(toProviderModelName('gpt-5.2')).toBe('gpt-5.2');
+    expect(toProviderModelName('composer-2')).toBe('composer-2');
+    for (const auto of [null, '', 'default', 'auto']) {
+      expect(toProviderModelName(auto)).toBe('cursor-auto');
+    }
+  });
 });
 
 describe('cursorAdapter', () => {
@@ -99,7 +114,7 @@ describe('cursorAdapter', () => {
           agentId: 'cursor',
           sessionId: 'chat-1',
           timestamp: new Date('2026-03-09T09:00:20.000Z'),
-          model: 'claude-4.5-sonnet',
+          model: 'claude-sonnet-4-5',
           inputTokens: 0,
           outputTokens: 0,
           cacheReadTokens: 0,
