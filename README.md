@@ -7,10 +7,12 @@ npx agent-wrapped
 ```
 
 <p align="center">
-  <img src="docs/demo.png" alt="Example card: tokens, API value, favorite model, longest session, streak and busiest day" width="420">
+  <a href="https://github.com/maxnols/agent-wrapped/raw/main/docs/demo.mp4">
+    <img src="docs/demo.gif" alt="Example video: animated slides with total tokens, API value, favorite model, longest session, streak, tokens by month and your coding type" width="360">
+  </a>
+  <br>
+  <sub>Made from demo data. The real clip has a beat: <a href="https://github.com/maxnols/agent-wrapped/raw/main/docs/demo.mp4">watch it with sound</a>.</sub>
 </p>
-
-<sub>The card above is made from demo data (`scripts/make-demo-home.ts`).</sub>
 
 ## What you get
 

@@ -1,6 +1,6 @@
 /**
  * Dev-time only: writes a fake home folder with a year of made-up agent logs.
- * Used for the README screenshot and for trying the CLI without real data.
+ * Used for the README demo video and for trying the CLI without real data.
  *
  * Usage: tsx scripts/make-demo-home.ts <target-dir> [year]
  */
