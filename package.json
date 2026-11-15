@@ -21,6 +21,10 @@
   "engines": {
     "node": ">=20"
   },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "scripts": {
     "build": "npm run build:player && tsup",
     "dev": "tsx src/cli/main.ts",

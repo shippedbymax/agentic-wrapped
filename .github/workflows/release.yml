@@ -1,10 +1,13 @@
 name: Release
 
-# Publishes to npm when a version tag like v0.1.0 is pushed.
-# Needs the repository secret NPM_TOKEN (an npm "automation" access token).
+# Publishes to npm when the version in package.json is not on npm yet.
+# To release: bump "version" in package.json and push to main.
+# Needs the repository secret NPM_TOKEN.
 on:
   push:
-    tags: ['v*']
+    branches: [main]
+    paths: [package.json]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -20,8 +23,22 @@ jobs:
           node-version: 22
           registry-url: https://registry.npmjs.org
           cache: npm
-      - run: npm ci
-      - run: npm run check
-      - run: npm publish --provenance --access public
+      - name: Check whether this version is already published
+        id: version
+        shell: bash
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          if npm view "agent-wrapped@$VERSION" version >/dev/null 2>&1; then
+            echo "Version $VERSION is already on npm. Nothing to do."
+            echo "is_new=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "is_new=true" >> "$GITHUB_OUTPUT"
+          fi
+      - if: steps.version.outputs.is_new == 'true'
+        run: npm ci
+      - if: steps.version.outputs.is_new == 'true'
+        run: npm run check
+      - if: steps.version.outputs.is_new == 'true'
+        run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
