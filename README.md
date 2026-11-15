@@ -7,11 +7,11 @@ npx agent-wrapped
 ```
 
 <p align="center">
-  <a href="https://github.com/maxnols/agent-wrapped/raw/main/docs/demo.mp4">
+  <a href="https://github.com/shippedbymax/agent-wrapped/raw/main/docs/demo.mp4">
     <img src="docs/demo.gif" alt="Example video: animated slides with total tokens, API value, favorite model, longest session, streak, tokens by month and your coding type" width="360">
   </a>
   <br>
-  <sub>Made from demo data. The real clip has a beat: <a href="https://github.com/maxnols/agent-wrapped/raw/main/docs/demo.mp4">watch it with sound</a>.</sub>
+  <sub>Made from demo data. The real clip has a beat: <a href="https://github.com/shippedbymax/agent-wrapped/raw/main/docs/demo.mp4">watch it with sound</a>.</sub>
 </p>
 
 ## What you get
@@ -57,7 +57,7 @@ npx agent-wrapped
 
 ## Known limits
 
-- **Early version.** The log readers are tested against sample logs that follow the documented formats. Real-world logs have more variety; please [open an issue](https://github.com/maxnols/agent-wrapped/issues) with the (anonymized) line that broke.
+- **Early version.** The log readers are tested against sample logs that follow the documented formats. Real-world logs have more variety; please [open an issue](https://github.com/shippedbymax/agent-wrapped/issues) with the (anonymized) line that broke.
 - **Resumed or forked Codex sessions** can replay earlier usage into a new log file. Such usage may be counted twice.
 - **Memory.** Log files are read as a stream, but all usage events of the year are held in memory to remove duplicates. Very heavy users may need a few hundred MB.
 
@@ -77,3 +77,7 @@ New agents and new cards are very welcome. Start with [CONTRIBUTING.md](CONTRIBU
 ## License
 
 MIT
+
+---
+
+Built by [shippedbymax](https://github.com/shippedbymax). Follow the build on [X](https://x.com/shippedbymax).
