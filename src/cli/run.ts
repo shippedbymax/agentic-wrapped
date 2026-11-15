@@ -1,5 +1,5 @@
 import { writeFile } from 'node:fs/promises';
-import { resolve } from 'node:path';
+import { extname, resolve } from 'node:path';
 import { Command, InvalidArgumentError, Option } from 'commander';
 import { ALL_ADAPTERS, getAdapter } from '../adapters/registry';
 import {
@@ -12,6 +12,7 @@ import {
 import { imageRenderer } from '../renderers/image';
 import { jsonRenderer } from '../renderers/json';
 import { terminalRenderer } from '../renderers/terminal';
+import { videoRenderer } from '../renderers/video';
 import { collectEvents } from './collect-events';
 
 /** Everything the CLI needs from the outside world. Injected so the CLI is testable. */
@@ -30,6 +31,7 @@ interface CliOptions {
   output?: string;
   json: boolean;
   image: boolean;
+  video: boolean;
   timeZone: string;
 }
 
@@ -49,9 +51,10 @@ export async function runCli(argv: readonly string[], deps: CliDependencies): Pr
     .version(deps.version)
     .option('-y, --year <year>', 'year to wrap', parseYear, deps.now.getFullYear())
     .addOption(new Option('-a, --agent <agent...>', 'only these agents').choices([...AGENT_IDS]))
-    .option('-o, --output <path>', 'where to save the image')
+    .option('-o, --output <path>', 'where to save the image (the video goes next to it)')
     .option('--json', 'print the raw report as JSON instead', false)
     .option('--no-image', 'do not write an image')
+    .option('--no-video', 'do not write the video player')
     .option('--time-zone <iana>', 'time zone for days and hours', deps.timeZone)
     .exitOverride()
     .configureOutput({ writeOut: deps.writeStdout, writeErr: deps.writeStderr });
@@ -94,12 +97,18 @@ export async function runCli(argv: readonly string[], deps: CliDependencies): Pr
     );
   }
 
+  const imagePath = resolve(options.output ?? `agent-wrapped-${options.year}.png`);
+  const videoPath = `${imagePath.slice(0, imagePath.length - extname(imagePath).length)}.html`;
   if (options.image) {
-    const outputPath = resolve(options.output ?? `agent-wrapped-${options.year}.png`);
-    await writeFile(outputPath, await imageRenderer.render(report));
+    await writeFile(imagePath, await imageRenderer.render(report));
+    deps.writeStdout(`  Card:  ${imagePath}\n`);
+  }
+  if (options.video) {
+    await writeFile(videoPath, await videoRenderer.render(report));
     deps.writeStdout(
-      `  Saved your card to ${outputPath}\n  Share it! Nothing left your machine.\n\n`,
+      `  Video: ${videoPath}\n         Open it in your browser and press "Save video".\n`,
     );
   }
+  if (options.image || options.video) deps.writeStdout('  Nothing left your machine.\n\n');
   return 0;
 }

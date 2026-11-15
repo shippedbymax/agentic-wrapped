@@ -25,6 +25,10 @@ Follow [docs/ADDING_AN_AGENT.md](docs/ADDING_AN_AGENT.md). You only touch `src/a
 
 Add one rule to `src/core/insights/build-insights.ts` and a test next to it. To show it on the image, add its id to `TILE_INSIGHT_IDS` in `src/renderers/image/build-card.ts`.
 
+## Change the video
+
+Edit `src/renderers/video/player/`, then run `npm run build:player`. Look at single frames with `npx tsx scripts/render-preview.ts frames /tmp/frames 1.5 6.5 < report.json` (get `report.json` from `npm run dev -- --json`), or open the HTML file with `#t=6.5` at the end of the address.
+
 ## Rules
 
 - **Never add network code.** The build fails if you do.

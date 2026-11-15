@@ -1,15 +1,35 @@
 {
   "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
   "files": {
-    "ignore": ["dist", "node_modules", "src/core/pricing/model-prices.json", "**/fixtures/**"]
+    "ignore": [
+      "dist",
+      "node_modules",
+      "src/core/pricing/model-prices.json",
+      "**/fixtures/**",
+      "src/renderers/video/player-bundle.generated.ts"
+    ]
   },
-  "formatter": { "indentStyle": "space", "indentWidth": 2, "lineWidth": 100 },
-  "javascript": { "formatter": { "quoteStyle": "single" } },
+  "formatter": {
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 100
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single"
+    }
+  },
   "linter": {
     "rules": {
       "recommended": true,
-      "style": { "useNamingConvention": "off", "noNonNullAssertion": "error" },
-      "correctness": { "noUnusedImports": "error", "noUnusedVariables": "error" }
+      "style": {
+        "useNamingConvention": "off",
+        "noNonNullAssertion": "error"
+      },
+      "correctness": {
+        "noUnusedImports": "error",
+        "noUnusedVariables": "error"
+      }
     }
   }
 }

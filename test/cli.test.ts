@@ -56,6 +56,9 @@ describe('agent-wrapped CLI', () => {
     expect(stdout).toContain(outputPath);
     expect(stderr).toContain('Skipped 2 unreadable log lines');
     expect((await readFile(outputPath)).subarray(1, 4).toString()).toBe('PNG');
+    const videoPage = await readFile(join(homeDir, 'card.html'), 'utf8');
+    expect(videoPage).toContain('<canvas id="stage">');
+    expect(stdout).toContain(join(homeDir, 'card.html'));
   });
 
   it('--agent limits the run to one agent', async () => {
@@ -64,7 +67,7 @@ describe('agent-wrapped CLI', () => {
   });
 
   it('exits with 1 and a clear message when there is no activity', async () => {
-    const { exitCode, stderr } = await run(['--year', '2024', '--no-image']);
+    const { exitCode, stderr } = await run(['--year', '2024', '--no-image', '--no-video']);
     expect(exitCode).toBe(1);
     expect(stderr).toContain('No agent activity found for 2024');
   });

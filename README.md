@@ -1,6 +1,6 @@
 # agent-wrapped
 
-**Your year with AI coding agents, wrapped.** One command. One shareable card. 100% local.
+**Your year with AI coding agents, wrapped.** One command. A 20-second video and a card to share. 100% local.
 
 ```bash
 npx agent-wrapped
@@ -14,6 +14,7 @@ npx agent-wrapped
 
 ## What you get
 
+- **A 20-second video with a beat** (`agent-wrapped-2026.html`): open it in your browser, press play, press **Save video** and you get an MP4 to post (Chrome and Safari; Firefox saves WebM). It is one self-contained file: no server, no external files.
 - **A card to share** (`agent-wrapped-2026.png`, 1080×1350): total tokens, API value, favorite model, longest session, longest streak, busiest day, your coding type and a month-by-month chart.
 - **A summary in your terminal**, with a breakdown per agent and per model.
 - **Raw numbers as JSON** with `--json`, if you want to build your own thing.
@@ -28,7 +29,8 @@ npx agent-wrapped
 
 ## 100% local
 
-- The tool reads log files on your machine and writes one image. That is all.
+- The tool reads log files on your machine and writes two files: an image and a video page. That is all.
+- The video page is self-contained. The animation and the music are generated in your browser; nothing is loaded from the internet.
 - It has **no network code**. A test fails the build if anyone adds some (`test/no-network.test.ts`).
 - It never reads your prompts or your code. The internal data type has no field for them.
 - Project names are hashed before they leave the log reader. They are only used to count projects.
@@ -38,9 +40,10 @@ npx agent-wrapped
 ```text
 -y, --year <year>        year to wrap (default: this year)
 -a, --agent <agent...>   only these agents: claude-code, codex
--o, --output <path>      where to save the image
+-o, --output <path>      where to save the image (the video goes next to it)
     --json               print the raw report as JSON instead
     --no-image           do not write an image
+    --no-video           do not write the video page
     --time-zone <iana>   time zone for days and hours (default: your system's)
 ```
 

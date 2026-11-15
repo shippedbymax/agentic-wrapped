@@ -5,19 +5,24 @@
   "keywords": ["claude-code", "codex", "wrapped", "ai", "coding-agents", "cli", "usage"],
   "license": "MIT",
   "type": "module",
-  "bin": { "agent-wrapped": "dist/cli.js" },
+  "bin": {
+    "agent-wrapped": "dist/cli.js"
+  },
   "files": ["dist", "README.md", "LICENSE"],
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
-    "build": "tsup",
+    "build": "npm run build:player && tsup",
     "dev": "tsx src/cli/main.ts",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.player.json",
     "lint": "biome check .",
     "format": "biome check --write .",
     "lint:layers": "depcruise src --config .dependency-cruiser.cjs",
     "test": "vitest run",
     "update-pricing": "tsx scripts/update-pricing.ts",
-    "check": "npm run lint && npm run lint:layers && npm run typecheck && npm run test && npm run build"
+    "check": "npm run lint && npm run lint:layers && npm run typecheck && npm run test && npm run build",
+    "build:player": "tsx scripts/build-player.ts"
   },
   "dependencies": {
     "@fontsource/inter": "^5.1.0",
@@ -29,8 +34,10 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
+    "@napi-rs/canvas": "^1.1.1",
     "@types/node": "^20.17.0",
     "dependency-cruiser": "^16.8.0",
+    "esbuild": "^0.28.2",
     "tsup": "^8.3.5",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2",

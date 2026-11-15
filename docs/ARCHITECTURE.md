@@ -7,7 +7,7 @@ agent-wrapped is a one-way pipeline built as **ports and adapters**: the stable 
  ┌───────────────────────┐   ┌──────────────────────────────┐   ┌──────────────────┐
  │ claude-code  discover │   │ normalize -> price ->        │   │ terminal         │
  │ codex        parse    │──▶│ aggregate -> insights        │──▶│ image (PNG)      │
- │ (your agent here)     │   │                              │   │ json             │
+ │ (your agent here)     │   │                              │   │ json · video     │
  └───────────────────────┘   └──────────────────────────────┘   └──────────────────┘
         UsageEvent[]                  WrappedReport
                          cli wires the three together
@@ -40,7 +40,7 @@ All of them live in `src/core`:
 4. **Price** (core): look up the model in the bundled price table. Unknown models are reported, not priced as zero silently.
 5. **Aggregate** (core): `computeStats` builds one `WrappedStats` object.
 6. **Insights** (core): one small rule per card turns stats into `Insight`s.
-7. **Render** (renderer): terminal text, a PNG card, or JSON.
+7. **Render** (renderer): terminal text, a PNG card, a video page, or JSON.
 
 `buildReport` in `src/core/build-report.ts` runs steps 3 to 6.
 
@@ -52,5 +52,15 @@ All of them live in `src/core`:
 - **Validate at the edge.** Raw log lines are checked with zod in the adapter. Inside the core, types are trusted.
 - **Local by construction.** No network code exists, and `test/no-network.test.ts` keeps it that way. Prices are a bundled snapshot, refreshed at development time with `npm run update-pricing`.
 - **No browser for the image.** satori builds an SVG from a plain element tree, resvg turns it into a PNG.
+
+## The video
+
+`src/renderers/video` writes one self-contained HTML file. Three pure pieces do the work, and they run both in the browser and in Node:
+
+- `player/scene.ts`: `drawFrame(ctx, timeSec, data)` draws one frame on a Canvas 2D context. Same time, same picture.
+- `player/beat.ts`: `renderBeat(sampleRate, barCount)` synthesizes the soundtrack as raw samples. No audio files.
+- `player/timing.ts`: one scene is one bar of the beat (96 BPM, 2.5 s), so every cut lands on the beat.
+
+`player/main.ts` is the only browser-specific file: it plays the samples, draws frames against the audio clock and records canvas plus audio with `MediaRecorder` for "Save video". `npm run build:player` bundles the player into `player-bundle.generated.ts`; a test fails if that file is out of date. `scripts/render-preview.ts` renders the same clip without a browser (canvas for Node plus ffmpeg), which is how the design is checked.
 
 Longer notes live in [`docs/adr`](adr).
