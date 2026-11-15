@@ -29,12 +29,14 @@ function buildVideoPage(data: VideoData, fontFaces: string): string {
 ${fontFaces}
 *{box-sizing:border-box}
 body{margin:0;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:16px;background:#0b0b12;color:#f5f5fa;font-family:Inter,system-ui,sans-serif}
-canvas{height:min(78vh,125vw);aspect-ratio:4/5;border-radius:20px;background:#12061f}
+canvas{height:min(62vh,125vw);aspect-ratio:4/5;border-radius:20px;background:#12061f}
 .controls{display:flex;gap:12px}
 button{font:700 18px Inter,system-ui,sans-serif;padding:14px 26px;border:0;border-radius:999px;cursor:pointer;background:#cdf564;color:#0b0b12}
 button.secondary{background:#26263a;color:#f5f5fa}
 button:disabled{opacity:.5;cursor:default}
 p{margin:0;min-height:1.4em;color:#8b8ba7;font-size:15px}
+.share{display:flex;flex-direction:column;align-items:center;gap:10px;width:min(100%,460px)}
+textarea{width:100%;resize:none;padding:14px;border:1px solid #26263a;border-radius:14px;background:#161625;color:#f5f5fa;font:400 15px/1.45 Inter,system-ui,sans-serif}
 </style>
 </head>
 <body>
@@ -44,6 +46,10 @@ p{margin:0;min-height:1.4em;color:#8b8ba7;font-size:15px}
 <button id="save" type="button" class="secondary">Save video</button>
 </div>
 <p id="status"></p>
+<div class="share">
+<textarea id="share-text" readonly rows="6"></textarea>
+<button id="copy" type="button" class="secondary">Copy post text</button>
+</div>
 <script>window.__AGENT_WRAPPED__=${toInlineJson(data)};</script>
 <script>${PLAYER_SCRIPT.replace(/<\/script/gi, '<\\/script')}</script>
 </body>

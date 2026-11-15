@@ -1,4 +1,4 @@
-import { type Insight, type WrappedReport, formatAgentName } from '../../core';
+import { type Insight, type WrappedReport, describePeriod, formatAgentName } from '../../core';
 import { type CardElement, box } from './element';
 
 export const CARD_WIDTH = 1080;
@@ -89,6 +89,7 @@ export function buildCard(report: WrappedReport): CardElement {
   const tiles = TILE_INSIGHT_IDS.map((id) => findInsight(insights, id)).filter(
     (insight): insight is Insight => insight !== undefined,
   );
+  const period = describePeriod(stats);
   const agentNames = stats.agents.map((agent) => formatAgentName(agent.agentId)).join(' + ');
 
   return box(
@@ -109,8 +110,8 @@ export function buildCard(report: WrappedReport): CardElement {
         { fontSize: 28, color: COLOR.accent, fontWeight: 700, letterSpacing: 4 },
         'AGENT WRAPPED',
       ),
-      box({ fontSize: 64, fontWeight: 800, marginTop: 6 }, `My ${stats.year} with AI agents`),
-      box({ fontSize: 26, color: COLOR.muted, marginTop: 6 }, agentNames),
+      box({ fontSize: 64, fontWeight: 800, marginTop: 6 }, period.headline),
+      box({ fontSize: 26, color: COLOR.muted, marginTop: 6 }, `${agentNames} · ${period.range}`),
     ),
     box(
       {

@@ -2,6 +2,7 @@ import pc from 'picocolors';
 import {
   type Renderer,
   type WrappedReport,
+  describePeriod,
   formatAgentName,
   formatCompactNumber,
   formatModelName,
@@ -18,9 +19,11 @@ function renderBar(share: number): string {
 
 function renderTerminalReport(report: WrappedReport): string {
   const { stats, insights } = report;
+  const period = describePeriod(stats);
   const lines: string[] = [
     '',
-    pc.bold(pc.magenta(`  Your ${stats.year} with AI coding agents, wrapped`)),
+    pc.bold(pc.magenta(`  ${period.headline}, wrapped`)),
+    pc.dim(`  ${period.range}`),
     '',
   ];
 

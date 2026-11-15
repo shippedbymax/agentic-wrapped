@@ -9,6 +9,8 @@ import {
   type HostEnvironment,
   PRICE_TABLE_UPDATED_AT,
   buildReport,
+  buildShareText,
+  describePeriod,
 } from '../core';
 import { imageRenderer } from '../renderers/image';
 import { jsonRenderer } from '../renderers/json';
@@ -122,5 +124,16 @@ export async function runCli(argv: readonly string[], deps: CliDependencies): Pr
     );
   }
   if (options.image || options.video) deps.writeStdout('  Nothing left your machine.\n\n');
+
+  const shareLines = buildShareText(report.stats).split('\n');
+  deps.writeStdout(`  Post it:\n${shareLines.map((line) => `    ${line}`).join('\n')}\n\n`);
+
+  const usesClaudeCode = report.stats.agents.some((agent) => agent.agentId === 'claude-code');
+  if (describePeriod(report.stats).isPartial && usesClaudeCode) {
+    deps.writeStdout(
+      '  Tip: Claude Code deletes logs after 30 days by default. To wrap a longer time next\n' +
+        '  run, set "cleanupPeriodDays": 365 in ~/.claude/settings.json.\n\n',
+    );
+  }
   return 0;
 }

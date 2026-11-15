@@ -39,7 +39,7 @@ exports[`renderers > image: same report gives the same card 1`] = `
             {
               "props": {
                 "children": [
-                  "Claude Code + Codex",
+                  "Claude Code + Codex · Mar 9 - Jul 1",
                 ],
                 "style": {
                   "color": "#8b8ba7",

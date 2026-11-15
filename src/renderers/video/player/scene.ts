@@ -34,7 +34,7 @@ function drawIntro(ctx: SceneContext, data: VideoData, sceneTimeSec: number): vo
     color: look.accent,
   });
   const yearPop = easeOutBack(progress(sceneTimeSec, 0.25, 0.55));
-  drawText(ctx, String(data.year), 640, {
+  drawText(ctx, data.introTitle, 640, {
     size: 330,
     weight: 800,
     color: look.text,
@@ -50,6 +50,11 @@ function drawIntro(ctx: SceneContext, data: VideoData, sceneTimeSec: number): vo
     size: 40,
     weight: 400,
     color: look.accent,
+  });
+  drawRisingText(ctx, data.range, 1015, sceneTimeSec, 1.2, {
+    size: 34,
+    weight: 400,
+    color: look.text,
   });
 }
 

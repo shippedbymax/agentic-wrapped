@@ -11,13 +11,18 @@ import {
 import type { Insight } from './insight';
 import { pickPersona } from './persona';
 
+/** `1 day`, `2 days`, `1,234 sessions`. */
+function pluralize(count: number, noun: string): string {
+  return `${count.toLocaleString('en-US')} ${noun}${count === 1 ? '' : 's'}`;
+}
+
 type InsightRule = (stats: WrappedStats) => Insight | undefined;
 
 const totalTokensInsight: InsightRule = (stats) => ({
   id: 'total-tokens',
   title: 'Total tokens',
   value: formatCompactNumber(stats.totals.totalTokens),
-  detail: `across ${stats.sessionCount.toLocaleString('en-US')} sessions on ${stats.activeDayCount} days`,
+  detail: `across ${pluralize(stats.sessionCount, 'session')} on ${pluralize(stats.activeDayCount, 'day')}`,
 });
 
 const costInsight: InsightRule = (stats) => ({
@@ -45,7 +50,7 @@ const favoriteAgentInsight: InsightRule = (stats) => {
     id: 'favorite-agent',
     title: 'Favorite agent',
     value: formatAgentName(favorite.agentId),
-    detail: `${favorite.sessionCount.toLocaleString('en-US')} sessions`,
+    detail: pluralize(favorite.sessionCount, 'session'),
   };
 };
 
@@ -63,7 +68,7 @@ const longestSessionInsight: InsightRule = (stats) => {
 const streakInsight: InsightRule = (stats) => ({
   id: 'streak',
   title: 'Longest streak',
-  value: `${stats.longestStreakDays} ${stats.longestStreakDays === 1 ? 'day' : 'days'}`,
+  value: pluralize(stats.longestStreakDays, 'day'),
   detail: 'in a row',
 });
 

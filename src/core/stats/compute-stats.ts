@@ -153,6 +153,7 @@ export function computeStats(
     if (!busiestDay || day.totalTokens > busiestDay.totalTokens) busiestDay = day;
   }
 
+  const activeDates = [...daysByDate.keys()].sort();
   const allInputTokens = totals.inputTokens + totals.cacheReadTokens + totals.cacheWriteTokens;
   const byTotalTokensDesc = (a: UsageBreakdown, b: UsageBreakdown) => b.totalTokens - a.totalTokens;
 
@@ -164,6 +165,8 @@ export function computeStats(
     projectCount: projectHashes.size,
     activeDayCount: daysByDate.size,
     longestStreakDays: computeLongestStreak(daysByDate.keys()),
+    firstActiveDate: activeDates[0],
+    lastActiveDate: activeDates[activeDates.length - 1],
     cacheHitRate: allInputTokens === 0 ? 0 : totals.cacheReadTokens / allInputTokens,
     agents: [...agentsById.values()].sort(byTotalTokensDesc),
     models: [...modelsByName.values()].sort(byTotalTokensDesc),

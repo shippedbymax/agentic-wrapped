@@ -33,6 +33,8 @@ const canvas = getElement<HTMLCanvasElement>('stage');
 const playButton = getElement<HTMLButtonElement>('play');
 const saveButton = getElement<HTMLButtonElement>('save');
 const statusLine = getElement<HTMLParagraphElement>('status');
+const shareText = getElement<HTMLTextAreaElement>('share-text');
+const copyButton = getElement<HTMLButtonElement>('copy');
 const ctx = canvas.getContext('2d') as unknown as SceneContext;
 canvas.width = VIDEO_WIDTH;
 canvas.height = VIDEO_HEIGHT;
@@ -132,6 +134,19 @@ playButton.addEventListener('click', () => run(() => play(), ''));
 saveButton.addEventListener('click', () =>
   run(saveVideo, `Recording ${Math.round(durationSec)} seconds, keep this tab open...`),
 );
+
+shareText.value = data.shareText;
+copyButton.addEventListener('click', async () => {
+  try {
+    await navigator.clipboard.writeText(data.shareText);
+  } catch {
+    // Pages opened from disk may not get clipboard access: select the text instead.
+    shareText.select();
+    statusLine.textContent = 'Press Ctrl+C / Cmd+C to copy the selected text.';
+    return;
+  }
+  statusLine.textContent = 'Copied. Paste it into your post and attach the video.';
+});
 
 // `#t=3.5` shows a single still frame. Handy for screenshots and for checking the design.
 const stillTimeSec = Number(new URLSearchParams(location.hash.slice(1)).get('t') ?? Number.NaN);

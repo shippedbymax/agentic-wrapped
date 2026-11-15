@@ -1,4 +1,10 @@
-import { type Insight, type WrappedReport, formatAgentName } from '../../core';
+import {
+  type Insight,
+  type WrappedReport,
+  buildShareText,
+  describePeriod,
+  formatAgentName,
+} from '../../core';
 
 type CountKind = 'compact' | 'usd' | 'days';
 
@@ -13,7 +19,13 @@ export interface VideoSlide {
 /** Everything the video player needs. Plain JSON: it is inlined into the HTML file. */
 export interface VideoData {
   year: number;
+  /** The big word of the intro: `2026` or `30 days`. */
+  introTitle: string;
+  /** `Oct 17 - Nov 15` */
+  range: string;
   agentNames: string;
+  /** Ready-to-post text shown under the video. */
+  shareText: string;
   slides: VideoSlide[];
   tokensByMonth: number[];
   busiestDay: string;
@@ -34,6 +46,7 @@ function toSlide(insight: Insight, count?: VideoSlide['count']): VideoSlide {
 export function buildVideoData(report: WrappedReport): VideoData {
   const { stats, insights } = report;
   const find = (id: string) => insights.find((insight) => insight.id === id);
+  const period = describePeriod(stats);
   const slides: VideoSlide[] = [];
 
   const totalTokens = find('total-tokens');
@@ -51,6 +64,9 @@ export function buildVideoData(report: WrappedReport): VideoData {
 
   return {
     year: stats.year,
+    introTitle: period.title,
+    range: period.range,
+    shareText: buildShareText(stats),
     agentNames: stats.agents.map((agent) => formatAgentName(agent.agentId)).join(' + '),
     slides,
     tokensByMonth: stats.tokensByMonth,

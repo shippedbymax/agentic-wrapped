@@ -46,6 +46,9 @@ export interface WrappedStats {
   projectCount: number;
   activeDayCount: number;
   longestStreakDays: number;
+  /** First and last local day with activity, `YYYY-MM-DD`. Undefined without activity. */
+  firstActiveDate: string | undefined;
+  lastActiveDate: string | undefined;
   /** Share of input that was served from cache, 0..1. */
   cacheHitRate: number;
   /** Sorted by total tokens, biggest first. */

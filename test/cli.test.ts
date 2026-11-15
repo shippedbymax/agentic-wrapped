@@ -53,6 +53,9 @@ describe('agent-wrapped CLI', () => {
     const { exitCode, stdout, stderr } = await run(['--output', outputPath]);
     expect(exitCode).toBe(0);
     expect(stdout).toContain('Total tokens');
+    expect(stdout).toContain('My 1 day with AI agents');
+    expect(stdout).toContain('#AgentWrapped');
+    expect(stdout).toContain('cleanupPeriodDays');
     expect(stdout).toContain(outputPath);
     expect(stderr).toContain('Skipped 2 unreadable log lines');
     expect((await readFile(outputPath)).subarray(1, 4).toString()).toBe('PNG');
